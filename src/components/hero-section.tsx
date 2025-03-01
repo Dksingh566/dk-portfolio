@@ -1,7 +1,7 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Github, Linkedin, ExternalLink, Twitter } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Twitter, ArrowRight, ExternalLink, MousePointer } from 'lucide-react';
 import { personalInfo } from '@/lib/data';
 import { AnimatedText } from '@/components/ui/animated-text';
 import { useElementInView } from '@/hooks/use-intersection-observer';
@@ -15,6 +15,10 @@ export function HeroSection() {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [matrixChars, setMatrixChars] = useState<string[][]>([]);
   const [heroRef, isVisible] = useElementInView<HTMLDivElement>({ threshold: 0.1 });
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
+  const heroSectionRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
   
   // Matrix effect setup
   useEffect(() => {
@@ -43,19 +47,70 @@ export function HeroSection() {
     
     return () => clearInterval(interval);
   }, []);
+
+  // Track mouse position for parallax effect
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (heroSectionRef.current) {
+        const rect = heroSectionRef.current.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        setMousePosition({ x, y });
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Track scroll progress
+  useEffect(() => {
+    const handleScroll = () => {
+      if (heroSectionRef.current) {
+        const scrollY = window.scrollY;
+        const sectionHeight = heroSectionRef.current.offsetHeight;
+        const progress = Math.min(scrollY / sectionHeight, 1);
+        setScrollProgress(progress);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   const handleTextComplete = () => {
     setCurrentTextIndex((prevIndex) => (prevIndex + 1) % TextLines.length);
+  };
+
+  // Function to play sound effect on button click
+  const playClickSound = () => {
+    const audio = new Audio('/click-sound.mp3');
+    audio.volume = 0.3;
+    audio.play().catch(() => {
+      // Ignore errors if sound can't be played
+      console.log('Sound playback failed, likely due to browser autoplay policies');
+    });
   };
   
   return (
     <section 
       id="home" 
-      ref={heroRef}
+      ref={(el) => {
+        if (heroRef.current) {
+          heroRef.current = el as HTMLDivElement;
+        }
+        heroSectionRef.current = el as HTMLDivElement;
+      }}
       className="relative min-h-screen flex flex-col justify-center overflow-hidden"
     >
-      {/* Matrix background effect */}
-      <div className="absolute inset-0 overflow-hidden opacity-10 select-none pointer-events-none z-0">
+      {/* Parallax matrix background effect */}
+      <div 
+        className="absolute inset-0 overflow-hidden opacity-10 select-none pointer-events-none z-0"
+        style={{
+          transform: `translate(${mousePosition.x * -20}px, ${mousePosition.y * -20}px)`,
+          transition: 'transform 0.1s ease-out'
+        }}
+      >
         <div className="matrix-bg w-full h-full">
           {matrixChars.map((row, rowIndex) => (
             <div key={rowIndex} className="flex justify-center opacity-60">
@@ -76,14 +131,26 @@ export function HeroSection() {
         </div>
       </div>
 
+      {/* Glowing orb background effect */}
+      <div 
+        className="absolute hidden md:block w-[500px] h-[500px] rounded-full bg-gradient-to-br from-primary/20 to-transparent blur-3xl"
+        style={{
+          left: `calc(50% + ${mousePosition.x * 100 - 50}px)`,
+          top: `calc(50% + ${mousePosition.y * 100 - 50}px)`,
+          transform: 'translate(-50%, -50%)',
+          opacity: 0.3 + (scrollProgress * -0.3),
+          transition: 'all 0.5s ease-out'
+        }}
+      ></div>
+
       <div 
         className={`container-custom mx-auto relative z-10 transition-all duration-1000 ${
           isVisible ? "opacity-100" : "opacity-0 transform translate-y-10"
         }`}
       >
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          <div className="mb-6 inline-flex items-center justify-center">
-            <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+          <div className="mb-6 inline-flex items-center justify-center animate-pulse">
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 hover:border-primary/40 transition-all duration-300 cursor-pointer">
               Available for freelance work
             </span>
           </div>
@@ -106,25 +173,43 @@ export function HeroSection() {
           
           <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in" style={{ animationDelay: '300ms' }}>
             <Button 
-              className="min-w-40 bg-primary hover:bg-primary/90 text-primary-foreground hover:scale-105 transition-all duration-300" 
+              className={`min-w-40 relative overflow-hidden group ${
+                isButtonHovered
+                  ? "bg-background border-2 border-primary text-primary"
+                  : "bg-primary hover:bg-primary/90 text-primary-foreground"
+              } hover:scale-105 transition-all duration-300`}
               size="lg"
+              onMouseEnter={() => setIsButtonHovered(true)}
+              onMouseLeave={() => setIsButtonHovered(false)}
               onClick={() => {
+                playClickSound();
                 const projectsSection = document.getElementById('projects');
                 if (projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              View My Projects
+              <span className="relative z-10 flex items-center gap-2">
+                View My Projects
+                <ArrowRight className={`h-4 w-4 transition-transform duration-300 ${
+                  isButtonHovered ? "translate-x-1" : ""
+                }`} />
+              </span>
+              <span className={`absolute inset-0 bg-primary/10 transform origin-left transition-transform duration-500 ${
+                isButtonHovered ? "scale-x-100" : "scale-x-0"
+              }`}></span>
             </Button>
             <Button 
-              className="min-w-40 hover:scale-105 transition-all duration-300" 
+              className="min-w-40 hover:scale-105 transition-all duration-300 group" 
               variant="outline" 
               size="lg"
               onClick={() => {
-                const contactSection = document.getElementById('contact');
-                if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
+                playClickSound();
+                window.location.href = '/contact';
               }}
             >
-              Get in Touch
+              <span className="flex items-center gap-2">
+                Get in Touch
+                <MousePointer className="h-4 w-4 group-hover:translate-y-1 transition-transform duration-300" />
+              </span>
             </Button>
           </div>
           
@@ -133,7 +218,7 @@ export function HeroSection() {
               href={personalInfo.socials.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-110"
+              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-primary/20"
             >
               <Github className="h-5 w-5" />
             </a>
@@ -141,7 +226,7 @@ export function HeroSection() {
               href={personalInfo.socials.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-110"
+              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-primary/20"
             >
               <Linkedin className="h-5 w-5" />
             </a>
@@ -149,7 +234,7 @@ export function HeroSection() {
               href={personalInfo.socials.twitter}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-110"
+              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-primary/20"
             >
               <Twitter className="h-5 w-5" />
             </a>
