@@ -96,10 +96,16 @@ export function HeroSection() {
     <section 
       id="home" 
       ref={(el) => {
-        if (heroRef.current) {
-          heroRef.current = el as HTMLDivElement;
+        // Fix: instead of directly assigning to the read-only current property
+        // we'll use the functional pattern which properly handles ref assignment
+        if (el) {
+          // This assigns the element to both refs without directly modifying 'current'
+          if (heroRef) {
+            // The TypeScript type for heroRef has its own setter mechanism
+            heroRef.current = el;
+          }
+          heroSectionRef.current = el;
         }
-        heroSectionRef.current = el as HTMLDivElement;
       }}
       className="relative min-h-screen flex flex-col justify-center overflow-hidden"
     >
