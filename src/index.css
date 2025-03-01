@@ -90,7 +90,7 @@
   }
   
   .matrix-bg {
-    background-image: var(--matrix-grid);
+    background-image: linear-gradient(90deg, rgba(20, 20, 20, 0.7) 1px, transparent 1px), linear-gradient(rgba(20, 20, 20, 0.7) 1px, transparent 1px);
     background-size: 30px 30px;
     animation: matrix-move 20s linear infinite;
   }
@@ -112,4 +112,75 @@
   100% {
     background-position: 500px 500px;
   }
+}
+
+/* Animation Keyframes */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.8);
+  }
+}
+
+@keyframes text-shimmer {
+  0% {
+    background-position: -500% 0;
+  }
+  100% {
+    background-position: 500% 0;
+  }
+}
+
+/* Sections with 3D perspective */
+.perspective-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.parallax-element {
+  will-change: transform;
+  transition: transform 0.2s ease-out;
+}
+
+/* Interactive elements styling */
+.interactive-element {
+  @apply transition-all duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(74,222,128,0.4)];
+  cursor: pointer;
+}
+
+.interactive-chip {
+  @apply px-3 py-1 rounded-full text-xs font-medium bg-secondary/50 text-foreground border border-primary/30
+    hover:bg-primary/20 hover:border-primary/60 transition-all duration-300;
+}
+
+/* Scrollbar styling for browsers that support it */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(20, 20, 20, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(74, 222, 128, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 222, 128, 0.5);
 }

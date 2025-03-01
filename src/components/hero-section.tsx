@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, GitHub, Linkedin, ExternalLink, Twitter } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, ExternalLink, Twitter } from 'lucide-react';
 import { personalInfo } from '@/lib/data';
 import { AnimatedText } from '@/components/ui/animated-text';
 import { useElementInView } from '@/hooks/use-intersection-observer';
@@ -120,7 +120,7 @@ export function HeroSection() {
               rel="noopener noreferrer"
               className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300"
             >
-              <GitHub className="h-5 w-5" />
+              <Github className="h-5 w-5" />
             </a>
             <a
               href={personalInfo.socials.linkedin}

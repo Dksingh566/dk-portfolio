@@ -81,6 +81,8 @@ export default {
 				'glow': '0 0 15px rgba(255, 255, 255, 0.5)',
 				'glow-lg': '0 0 30px rgba(255, 255, 255, 0.5)',
 				'neon': '0 0 10px rgba(74, 222, 128, 0.6), 0 0 20px rgba(74, 222, 128, 0.4), 0 0 30px rgba(74, 222, 128, 0.2)',
+				'neon-sm': '0 0 5px rgba(74, 222, 128, 0.4), 0 0 10px rgba(74, 222, 128, 0.2)',
+				'neon-lg': '0 0 15px rgba(74, 222, 128, 0.7), 0 0 30px rgba(74, 222, 128, 0.5), 0 0 45px rgba(74, 222, 128, 0.3)',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -160,6 +162,7 @@ export default {
 				'gradient-glass': 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
 				'shimmer': 'linear-gradient(45deg, #2b2b2b 0%, #3a3a3a 30%, #4a4a4a 50%, #3a3a3a 70%, #2b2b2b 100%)',
 				'matrix-grid': 'linear-gradient(90deg, rgba(20, 20, 20, 0.7) 1px, transparent 1px), linear-gradient(rgba(20, 20, 20, 0.7) 1px, transparent 1px)',
+				'glow-grid': 'linear-gradient(90deg, rgba(74, 222, 128, 0.1) 1px, transparent 1px), linear-gradient(rgba(74, 222, 128, 0.1) 1px, transparent 1px)',
 			},
 		}
 	},

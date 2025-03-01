@@ -25,8 +25,8 @@ export function CursorEffect({ color = '#4ADE80' }: CursorEffectProps) {
       const target = e.target as HTMLElement;
       const isClickable = target.tagName === 'BUTTON' || 
                          target.tagName === 'A' || 
-                         target.closest('button') || 
-                         target.closest('a') ||
+                         !!target.closest('button') || 
+                         !!target.closest('a') ||
                          window.getComputedStyle(target).cursor === 'pointer';
                          
       setIsPointer(isClickable);
@@ -59,13 +59,17 @@ export function CursorEffect({ color = '#4ADE80' }: CursorEffectProps) {
     
     const links = document.querySelectorAll('a, button');
     links.forEach(link => {
-      link.style.cursor = 'none';
+      if (link instanceof HTMLElement) {
+        link.style.cursor = 'none';
+      }
     });
     
     return () => {
       document.body.style.cursor = '';
       links.forEach(link => {
-        link.style.cursor = '';
+        if (link instanceof HTMLElement) {
+          link.style.cursor = '';
+        }
       });
     };
   }, []);
