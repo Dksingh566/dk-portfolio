@@ -7,7 +7,7 @@ import { AnimatedText } from '@/components/ui/animated-text';
 import { useElementInView } from '@/hooks/use-intersection-observer';
 
 const TextLines = [
-  "Hi, I'm Dheerendra Singh – UI/UX Designer & Front-End Developer.",
+  "Hi, I'm Dhirendra Singh – UI/UX Designer & Front-End Developer.",
   "Crafting Digital Experiences | Building Future Tech"
 ];
 
@@ -105,11 +105,26 @@ export function HeroSection() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in" style={{ animationDelay: '300ms' }}>
-            <Button className="min-w-40 bg-primary hover:bg-primary/90 text-primary-foreground" size="lg">
-              <a href="#projects">View My Projects</a>
+            <Button 
+              className="min-w-40 bg-primary hover:bg-primary/90 text-primary-foreground hover:scale-105 transition-all duration-300" 
+              size="lg"
+              onClick={() => {
+                const projectsSection = document.getElementById('projects');
+                if (projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              View My Projects
             </Button>
-            <Button className="min-w-40" variant="outline" size="lg">
-              <a href="#contact">Get in Touch</a>
+            <Button 
+              className="min-w-40 hover:scale-105 transition-all duration-300" 
+              variant="outline" 
+              size="lg"
+              onClick={() => {
+                const contactSection = document.getElementById('contact');
+                if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Get in Touch
             </Button>
           </div>
           
@@ -118,7 +133,7 @@ export function HeroSection() {
               href={personalInfo.socials.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300"
+              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-110"
             >
               <Github className="h-5 w-5" />
             </a>
@@ -126,7 +141,7 @@ export function HeroSection() {
               href={personalInfo.socials.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300"
+              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-110"
             >
               <Linkedin className="h-5 w-5" />
             </a>
@@ -134,7 +149,7 @@ export function HeroSection() {
               href={personalInfo.socials.twitter}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300"
+              className="p-2 rounded-full hover:bg-white/10 hover:text-primary transition-all duration-300 hover:scale-110"
             >
               <Twitter className="h-5 w-5" />
             </a>
@@ -143,7 +158,15 @@ export function HeroSection() {
       </div>
       
       <div className="absolute bottom-10 left-0 right-0 flex justify-center animate-bounce">
-        <a href="#about" className="p-2 rounded-full hover:text-primary transition-colors">
+        <a 
+          href="#about" 
+          className="p-2 rounded-full hover:text-primary transition-colors hover:scale-110 duration-300"
+          onClick={(e) => {
+            e.preventDefault();
+            const aboutSection = document.getElementById('about');
+            if (aboutSection) aboutSection.scrollIntoView({ behavior: 'smooth' });
+          }}
+        >
           <ChevronDown className="h-6 w-6" />
         </a>
       </div>

@@ -7,6 +7,40 @@
 
 @layer base {
   :root {
+    /* Light mode variables */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 98%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 98%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 142 71% 45%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 10% 3.9%;
+
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 5% 40%;
+
+    --accent: 240 5% 96%;
+    --accent-foreground: 240 10% 3.9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5% 90%;
+    --input: 240 5% 90%;
+    --ring: 142 71% 45%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Dark mode variables */
     --background: 240 20% 3.9%;
     --foreground: 0 0% 98%;
 
@@ -34,12 +68,18 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 142 71% 45%;
-
-    --radius: 0.75rem;
   }
 
   * {
-    @apply border-border selection:bg-primary/20 selection:text-white;
+    @apply border-border selection:bg-primary/20;
+  }
+  
+  .dark * {
+    @apply selection:text-white;
+  }
+  
+  .light * {
+    @apply selection:text-foreground;
   }
   
   html {
@@ -52,13 +92,25 @@
   }
 
   ::selection {
-    @apply bg-primary/20 text-foreground;
+    @apply bg-primary/20;
+  }
+  
+  .dark ::selection {
+    @apply text-foreground;
+  }
+  
+  .light ::selection {
+    @apply text-foreground;
   }
 }
 
 @layer components {
   .glass-panel {
     @apply bg-secondary/30 backdrop-blur-md border border-white/10 rounded-xl;
+  }
+  
+  .light .glass-panel {
+    @apply border-black/10;
   }
   
   .text-gradient {
@@ -93,6 +145,10 @@
     background-image: linear-gradient(90deg, rgba(20, 20, 20, 0.7) 1px, transparent 1px), linear-gradient(rgba(20, 20, 20, 0.7) 1px, transparent 1px);
     background-size: 30px 30px;
     animation: matrix-move 20s linear infinite;
+  }
+  
+  .light .matrix-bg {
+    background-image: linear-gradient(90deg, rgba(200, 200, 200, 0.7) 1px, transparent 1px), linear-gradient(rgba(200, 200, 200, 0.7) 1px, transparent 1px);
   }
   
   .hide-scrollbar {

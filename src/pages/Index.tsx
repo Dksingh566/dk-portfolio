@@ -7,20 +7,23 @@ import ProjectsSection from '@/components/projects-section';
 import SkillsSection from '@/components/skills-section';
 import { Footer } from '@/components/ui/footer';
 import { NavBar } from '@/components/ui/nav-bar';
+import { ThemeProvider } from '@/hooks/use-theme';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <CursorEffect />
-      <NavBar />
-      <main>
-        <HeroSection />
-        <AboutSection />
-        <SkillsSection />
-        <ProjectsSection />
-      </main>
-      <Footer />
-    </div>
+    <ThemeProvider>
+      <div className="min-h-screen bg-background text-foreground">
+        <CursorEffect />
+        <NavBar />
+        <main>
+          <HeroSection />
+          <AboutSection />
+          <SkillsSection />
+          <ProjectsSection />
+        </main>
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 };
 

@@ -1,19 +1,18 @@
-
 export const personalInfo = {
-  name: "Dheerendra Singh",
+  name: "Dhirendra Singh",
   title: "UI/UX Designer & Front-End Developer",
   tagline: "Crafting Digital Experiences | Building Future Tech",
-  email: "hello@dheerendrasingh.com",
+  email: "hello@dhirendrasingh.com",
   phone: "+91 9876543210",
   location: "Bangalore, India",
   bio: "I'm a passionate UI/UX designer and front-end developer with 5+ years of experience creating intuitive, engaging digital experiences. I transform complex problems into elegant solutions through thoughtful design and clean code.",
   avatar: "/placeholder.svg", // Replace with actual image
   socials: {
-    github: "https://github.com/dheerendrasingh",
-    linkedin: "https://linkedin.com/in/dheerendrasingh",
-    twitter: "https://twitter.com/dheerendrasingh",
-    dribbble: "https://dribbble.com/dheerendrasingh",
-    behance: "https://behance.net/dheerendrasingh"
+    github: "https://github.com/dhirendrasingh",
+    linkedin: "https://linkedin.com/in/dhirendrasingh",
+    twitter: "https://twitter.com/dhirendrasingh",
+    dribbble: "https://dribbble.com/dhirendrasingh",
+    behance: "https://behance.net/dhirendrasingh"
   }
 };
 
@@ -195,19 +194,19 @@ export const testimonials = [
   {
     name: "Sarah Johnson",
     position: "Product Manager at TechCorp",
-    text: "Dheerendra is exceptional at translating complex requirements into intuitive interfaces. His designs have significantly improved our user engagement metrics.",
+    text: "Dhirendra is exceptional at translating complex requirements into intuitive interfaces. His designs have significantly improved our user engagement metrics.",
     avatar: "/placeholder.svg" // Replace with actual image
   },
   {
     name: "Alex Chen",
     position: "CTO at StartupX",
-    text: "Working with Dheerendra was a game-changer for our product. His technical expertise and design sensibility created an exceptional user experience.",
+    text: "Working with Dhirendra was a game-changer for our product. His technical expertise and design sensibility created an exceptional user experience.",
     avatar: "/placeholder.svg" // Replace with actual image
   },
   {
     name: "Maya Patel",
     position: "Frontend Lead at InnovateTech",
-    text: "Dheerendra's code is as clean as his designs. His attention to detail and commitment to performance make him an invaluable team member.",
+    text: "Dhirendra's code is as clean as his designs. His attention to detail and commitment to performance make him an invaluable team member.",
     avatar: "/placeholder.svg" // Replace with actual image
   }
 ];

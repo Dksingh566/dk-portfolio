@@ -13,7 +13,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <div className="mb-6 md:mb-0">
             <a href="#home" className="text-2xl font-bold">
-              <span className="text-primary">D</span>heerendra
+              <span className="text-primary">D</span>hirendra
             </a>
             <p className="mt-2 text-sm text-muted-foreground max-w-md">
               Crafting digital experiences that blend beautiful design with exceptional functionality.
@@ -39,7 +39,7 @@ export function Footer() {
         
         <div className="border-t border-white/5 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-muted-foreground mb-4 md:mb-0">
-            © {currentYear} Dheerendra Singh. All rights reserved.
+            © {currentYear} Dhirendra Singh. All rights reserved.
           </p>
           
           <div className="flex space-x-4">
@@ -47,7 +47,7 @@ export function Footer() {
               href={personalInfo.socials.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full hover:bg-white/10 transition-colors"
+              className="p-2 rounded-full hover:bg-white/10 transition-colors hover:scale-110 duration-300"
             >
               <Github className="h-4 w-4" />
             </a>
@@ -55,7 +55,7 @@ export function Footer() {
               href={personalInfo.socials.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full hover:bg-white/10 transition-colors"
+              className="p-2 rounded-full hover:bg-white/10 transition-colors hover:scale-110 duration-300"
             >
               <Linkedin className="h-4 w-4" />
             </a>
@@ -63,7 +63,7 @@ export function Footer() {
               href={personalInfo.socials.twitter}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full hover:bg-white/10 transition-colors"
+              className="p-2 rounded-full hover:bg-white/10 transition-colors hover:scale-110 duration-300"
             >
               <Twitter className="h-4 w-4" />
             </a>
