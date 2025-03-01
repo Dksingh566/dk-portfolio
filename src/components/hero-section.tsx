@@ -97,12 +97,12 @@ export function HeroSection() {
       id="home" 
       ref={(el) => {
         if (el) {
-          // Type assertion to ensure el is treated as HTMLDivElement
+          // Using a type assertion to ensure el is treated as HTMLDivElement
           const divElement = el as HTMLDivElement;
           
-          // Safely update the ref provided by useElementInView
-          if (heroRef) {
-            heroRef.current = divElement;
+          // Using function-based ref pattern for the heroRef from useElementInView
+          if (typeof heroRef === 'function') {
+            heroRef(divElement);
           }
           
           // Update our local ref
