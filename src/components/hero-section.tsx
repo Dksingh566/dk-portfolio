@@ -1,20 +1,17 @@
+
 import React, { useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useElementInView } from '@/hooks/use-intersection-observer';
 import { TypeAnimation } from 'react-type-animation';
 import { personalInfo } from '@/lib/data';
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export function HeroSection() {
   const heroSectionRef = useRef<HTMLDivElement>(null);
   const [heroRef, isHeroVisible] = useElementInView<HTMLDivElement>({ threshold: 0.5 });
   
-  useEffect(() => {
-    if (heroRef && typeof heroRef === 'object' && 'current' in heroRef) {
-      heroRef.current = heroSectionRef.current;
-    }
-  }, [heroRef]);
+  // We don't need to manually update heroRef as it's handled in the ref callback
   
   return (
     <section 
@@ -24,16 +21,14 @@ export function HeroSection() {
       id="home" 
       ref={(el) => {
         if (el) {
-          // Using a type assertion to ensure el is treated as HTMLDivElement
-          const divElement = el as HTMLDivElement;
-          
-          // For the heroRef from useElementInView, only update if it's an object with current
-          if (heroRef && typeof heroRef === 'object' && 'current' in heroRef) {
-            heroRef.current = divElement;
-          }
-          
           // Update our local ref
-          heroSectionRef.current = divElement;
+          heroSectionRef.current = el;
+          
+          // For the heroRef from useElementInView, call it as a function if it's a function
+          if (typeof heroRef === 'function') {
+            heroRef(el);
+          }
+          // We don't need to set heroRef.current as it's read-only and handled by the hook
         }
       }}
     >
@@ -63,7 +58,7 @@ export function HeroSection() {
         </h2>
         
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12">
-          {personalInfo.hero_description}
+          {personalInfo.bio}
         </p>
         
         <div className="space-x-4">
