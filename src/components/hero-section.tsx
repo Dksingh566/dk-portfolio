@@ -25,9 +25,8 @@ export function HeroSection() {
           heroSectionRef.current = el;
           
           // For the heroRef from useElementInView
-          // Cast el to HTMLDivElement to ensure type compatibility
           if (typeof heroRef === 'function') {
-            heroRef(el as HTMLDivElement);
+            heroRef(el);
           }
         }
       }}
