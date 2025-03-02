@@ -2,14 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Menu, X, Github, Linkedin, ExternalLink, Sun, Moon, Twitter, MessageSquare } from 'lucide-react';
+import { Menu, X, Github, Linkedin, ExternalLink, Sun, Moon, Twitter, MessageSquare, FileText } from 'lucide-react';
 import { personalInfo } from '@/lib/data';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useTheme } from '@/hooks/use-theme';
+import { toast } from 'sonner';
 
 interface NavItem {
   name: string;
   href: string;
+  icon?: React.ElementType;
 }
 
 const navItems: NavItem[] = [
@@ -17,7 +19,7 @@ const navItems: NavItem[] = [
   { name: 'About', href: '#about' },
   { name: 'Projects', href: '#projects' },
   { name: 'Skills', href: '#skills' },
-  { name: 'Resume', href: '#resume' },
+  { name: 'Resume', href: '#resume', icon: FileText },
   { name: 'Contact', href: '/contact' },
 ];
 
@@ -26,6 +28,7 @@ export function NavBar() {
   const [activeSection, setActiveSection] = useState('home');
   const { theme, setTheme } = useTheme();
   const [isContactHovered, setIsContactHovered] = useState(false);
+  const [isResumeHovered, setIsResumeHovered] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,17 +60,38 @@ export function NavBar() {
   };
 
   // Function to handle navigation
-  const navigateTo = (href: string) => {
+  const navigateTo = (href: string, name: string) => {
     if (href.startsWith('#')) {
       // Internal section navigation
       const element = document.getElementById(href.substring(1));
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
+      
+      // Special case for Resume
+      if (name === 'Resume') {
+        handleResumeClick();
+      }
     } else {
       // External page navigation
       window.location.href = href;
     }
+  };
+  
+  // Function to handle resume click
+  const handleResumeClick = () => {
+    toast.success("Resume is now downloading!", {
+      description: "Thank you for your interest in my profile.",
+      position: "bottom-right",
+      duration: 3000
+    });
+    
+    // Simulate resume download (in a real app, this would be an actual download link)
+    setTimeout(() => {
+      toast.info("Resume downloaded successfully!", {
+        position: "bottom-right"
+      });
+    }, 2000);
   };
 
   return (
@@ -93,18 +117,24 @@ export function NavBar() {
               key={item.name}
               href={item.href}
               onClick={(e) => {
-                if (item.href.startsWith('#')) {
-                  e.preventDefault();
-                  navigateTo(item.href);
-                }
+                e.preventDefault();
+                navigateTo(item.href, item.name);
               }}
+              onMouseEnter={() => item.name === 'Resume' && setIsResumeHovered(true)}
+              onMouseLeave={() => item.name === 'Resume' && setIsResumeHovered(false)}
               className={cn(
-                "px-4 py-2 text-sm font-medium transition-all duration-300 rounded-md relative hover:scale-105",
+                "px-4 py-2 text-sm font-medium transition-all duration-300 rounded-md relative hover:scale-105 flex items-center gap-1",
                 activeSection === item.href.substring(1) && item.href.startsWith('#')
                   ? "text-primary" 
-                  : "text-foreground/80 hover:text-foreground"
+                  : "text-foreground/80 hover:text-foreground",
+                item.name === 'Resume' && "bg-primary/10 hover:bg-primary/20"
               )}
             >
+              {item.icon && <item.icon className={cn(
+                "h-4 w-4 transition-transform duration-300",
+                isResumeHovered && item.name === 'Resume' ? "rotate-12" : ""
+              )} />}
+              
               {activeSection === item.href.substring(1) && item.href.startsWith('#') && (
                 <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
               )}
@@ -174,18 +204,18 @@ export function NavBar() {
                     key={item.name}
                     href={item.href}
                     onClick={(e) => {
-                      if (item.href.startsWith('#')) {
-                        e.preventDefault();
-                        navigateTo(item.href);
-                      }
+                      e.preventDefault();
+                      navigateTo(item.href, item.name);
                     }}
                     className={cn(
-                      "px-4 py-3 text-base font-medium transition-all duration-200 rounded-md hover:scale-105",
+                      "px-4 py-3 text-base font-medium transition-all duration-200 rounded-md hover:scale-105 flex items-center gap-2",
                       activeSection === item.href.substring(1) && item.href.startsWith('#')
                         ? "bg-muted/50 text-primary" 
-                        : "text-foreground/80 hover:bg-muted/30 hover:text-foreground"
+                        : "text-foreground/80 hover:bg-muted/30 hover:text-foreground",
+                      item.name === 'Resume' && "bg-primary/10 hover:bg-primary/20"
                     )}
                   >
+                    {item.icon && <item.icon className="h-4 w-4" />}
                     {item.name}
                   </a>
                 ))}

@@ -7,10 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Calendar, CheckCircle2 } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export function AboutSection() {
   const [mainRef, isMainVisible] = useElementInView<HTMLDivElement>({ threshold: 0.2 });
   const [timelineRef, isTimelineVisible] = useElementInView<HTMLDivElement>({ threshold: 0.2 });
+  const [imageHovered, setImageHovered] = useState(false);
   
   return (
     <section id="about" className="section-spacing relative overflow-hidden">
@@ -38,14 +40,27 @@ export function AboutSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={isMainVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative"
+              onMouseEnter={() => setImageHovered(true)}
+              onMouseLeave={() => setImageHovered(false)}
             >
-              <div className="aspect-square w-full max-w-md mx-auto rounded-2xl overflow-hidden relative glass-panel border-primary/20">
+              <div className="aspect-square w-full max-w-md mx-auto rounded-2xl overflow-hidden relative glass-panel border-primary/20 transition-all duration-300 shadow-lg hover:shadow-primary/20">
                 <img
-                  src={personalInfo.avatar}
+                  src="/lovable-uploads/ce623ae9-1aaa-4274-bd07-81dfef61dffb.png"
                   alt={personalInfo.name}
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full object-cover transition-transform duration-500 ${imageHovered ? 'scale-110' : 'scale-100'}`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+                
+                <motion.div 
+                  className="absolute bottom-4 left-4 right-4 bg-background/70 backdrop-blur-sm p-3 rounded-lg transition-all duration-300"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={imageHovered ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+                >
+                  <p className="text-sm font-medium text-foreground">
+                    {personalInfo.name} - {personalInfo.location}
+                  </p>
+                </motion.div>
               </div>
             </motion.div>
             

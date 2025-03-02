@@ -2,10 +2,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import { useElementInView } from '@/hooks/use-intersection-observer';
 import { TypeAnimation } from 'react-type-animation';
 import { personalInfo } from '@/lib/data';
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 
 export function HeroSection() {
@@ -40,18 +38,6 @@ export function HeroSection() {
       ref={heroSectionRef}
     >
       <div className="container-custom mx-auto text-center relative z-10">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
-          <Avatar className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden mx-auto mb-6 shadow-md border-2 border-primary hover:border-4 hover:scale-105 transition-all duration-300">
-            <AvatarImage src="/lovable-uploads/ce623ae9-1aaa-4274-bd07-81dfef61dffb.png" alt={personalInfo.name} className="object-cover" />
-            <AvatarFallback>{personalInfo.name.charAt(0)}</AvatarFallback>
-          </Avatar>
-        </motion.div>
-        
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
