@@ -11,8 +11,6 @@ export function HeroSection() {
   const heroSectionRef = useRef<HTMLDivElement>(null);
   const [heroRef, isHeroVisible] = useElementInView<HTMLDivElement>({ threshold: 0.5 });
   
-  // We don't need to manually update heroRef as it's handled in the ref callback
-  
   return (
     <section 
       className={`min-h-screen relative flex flex-col items-center justify-center px-4 overflow-hidden ${
@@ -20,13 +18,14 @@ export function HeroSection() {
       }`} 
       id="home" 
       ref={(el) => {
+        // Update our local ref
         if (el) {
-          // Update our local ref
           heroSectionRef.current = el;
           
           // For the heroRef from useElementInView
+          // We need to ensure el is cast to HTMLDivElement
           if (typeof heroRef === 'function') {
-            heroRef(el as HTMLDivElement);
+            heroRef(el);
           }
         }
       }}
