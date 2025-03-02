@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useElementInView } from '@/hooks/use-intersection-observer';
@@ -26,7 +26,7 @@ export function HeroSection() {
           
           // For the heroRef from useElementInView
           if (typeof heroRef === 'function') {
-            heroRef(el);
+            heroRef(el as HTMLDivElement);
           }
         }
       }}
