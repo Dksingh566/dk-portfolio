@@ -11,7 +11,7 @@ export function ContactButton() {
     <Button 
       className={cn(
         "ml-4 relative group overflow-hidden transition-all duration-300",
-        isContactHovered ? "bg-background text-primary scale-105" : "bg-primary hover:bg-primary/80 text-primary-foreground"
+        isContactHovered ? "bg-background text-primary border border-primary scale-105" : "bg-primary hover:bg-primary/80 text-primary-foreground"
       )}
       onMouseEnter={() => setIsContactHovered(true)}
       onMouseLeave={() => setIsContactHovered(false)}
@@ -28,6 +28,9 @@ export function ContactButton() {
         "absolute inset-0 border-2 border-primary rounded-md transition-all duration-300",
         isContactHovered ? "scale-105 opacity-100" : "scale-90 opacity-0"
       )}></span>
+      {isContactHovered && (
+        <span className="absolute inset-0 bg-primary/10 animate-pulse"></span>
+      )}
     </Button>
   );
 }

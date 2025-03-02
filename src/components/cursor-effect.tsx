@@ -89,7 +89,7 @@ export function CursorEffect({ color = '#4ADE80' }: CursorEffectProps) {
           y: position.y - 16,
           scale: isClicking ? 0.8 : isPointer ? 1.5 : 1,
           opacity: isVisible ? 1 : 0,
-          borderColor: isPointer ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0.2)',
+          borderColor: isPointer ? color : 'rgba(255, 255, 255, 0.2)',
         }}
         transition={{
           type: 'spring',
@@ -98,8 +98,8 @@ export function CursorEffect({ color = '#4ADE80' }: CursorEffectProps) {
           mass: 0.5,
         }}
         style={{
-          border: '1.5px solid rgba(255, 255, 255, 0.2)',
-          backgroundColor: isPointer ? 'transparent' : 'rgba(255, 255, 255, 0.05)',
+          border: `1.5px solid ${isPointer ? color : 'rgba(255, 255, 255, 0.2)'}`,
+          backgroundColor: isPointer ? 'transparent' : color,
         }}
       />
       

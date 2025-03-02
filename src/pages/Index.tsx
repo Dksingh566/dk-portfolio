@@ -8,12 +8,14 @@ import SkillsSection from '@/components/skills-section';
 import { Footer } from '@/components/ui/footer';
 import { NavBar } from '@/components/ui/nav-bar';
 import { ThemeProvider } from '@/hooks/use-theme';
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from "sonner";
 
 const Index = () => {
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground">
-        <CursorEffect />
+        <CursorEffect color="#4ADE80" />
         <NavBar />
         <main>
           <HeroSection />
@@ -22,6 +24,8 @@ const Index = () => {
           <ProjectsSection />
         </main>
         <Footer />
+        <Toaster />
+        <SonnerToaster position="bottom-right" />
       </div>
     </ThemeProvider>
   );
