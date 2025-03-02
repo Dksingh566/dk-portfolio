@@ -24,11 +24,11 @@ export function HeroSection() {
           // Update our local ref
           heroSectionRef.current = el;
           
-          // For the heroRef from useElementInView, call it as a function if it's a function
+          // For the heroRef from useElementInView
+          // Cast el to HTMLDivElement to ensure type compatibility
           if (typeof heroRef === 'function') {
-            heroRef(el);
+            heroRef(el as HTMLDivElement);
           }
-          // We don't need to set heroRef.current as it's read-only and handled by the hook
         }
       }}
     >
