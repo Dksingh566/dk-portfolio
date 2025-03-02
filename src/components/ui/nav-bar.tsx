@@ -2,33 +2,17 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Menu, X, Github, Linkedin, ExternalLink, Sun, Moon, Twitter, MessageSquare, FileText } from 'lucide-react';
-import { personalInfo } from '@/lib/data';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/hooks/use-theme';
-import { toast } from 'sonner';
-
-interface NavItem {
-  name: string;
-  href: string;
-  icon?: React.ElementType;
-}
-
-const navItems: NavItem[] = [
-  { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Resume', href: '#resume', icon: FileText },
-  { name: 'Contact', href: '/contact' },
-];
+import { navItems } from './nav/nav-items';
+import { DesktopNav } from './nav/desktop-nav';
+import { ContactButton } from './nav/contact-button';
+import { MobileNav } from './nav/mobile-nav';
 
 export function NavBar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { theme, setTheme } = useTheme();
-  const [isContactHovered, setIsContactHovered] = useState(false);
-  const [isResumeHovered, setIsResumeHovered] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,41 +43,6 @@ export function NavBar() {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
-  // Function to handle navigation
-  const navigateTo = (href: string, name: string) => {
-    if (href.startsWith('#')) {
-      // Internal section navigation
-      const element = document.getElementById(href.substring(1));
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-      
-      // Special case for Resume
-      if (name === 'Resume') {
-        handleResumeClick();
-      }
-    } else {
-      // External page navigation
-      window.location.href = href;
-    }
-  };
-  
-  // Function to handle resume click
-  const handleResumeClick = () => {
-    toast.success("Resume is now downloading!", {
-      description: "Thank you for your interest in my profile.",
-      position: "bottom-right",
-      duration: 3000
-    });
-    
-    // Simulate resume download (in a real app, this would be an actual download link)
-    setTimeout(() => {
-      toast.info("Resume downloaded successfully!", {
-        position: "bottom-right"
-      });
-    }, 2000);
-  };
-
   return (
     <header
       className={cn(
@@ -111,59 +60,11 @@ export function NavBar() {
           <span className="text-primary">D</span>hirendra
         </a>
         
-        <nav className="hidden md:flex items-center space-x-1">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              onClick={(e) => {
-                e.preventDefault();
-                navigateTo(item.href, item.name);
-              }}
-              onMouseEnter={() => item.name === 'Resume' && setIsResumeHovered(true)}
-              onMouseLeave={() => item.name === 'Resume' && setIsResumeHovered(false)}
-              className={cn(
-                "px-4 py-2 text-sm font-medium transition-all duration-300 rounded-md relative hover:scale-105 flex items-center gap-1",
-                activeSection === item.href.substring(1) && item.href.startsWith('#')
-                  ? "text-primary" 
-                  : "text-foreground/80 hover:text-foreground",
-                item.name === 'Resume' && "bg-primary/10 hover:bg-primary/20"
-              )}
-            >
-              {item.icon && <item.icon className={cn(
-                "h-4 w-4 transition-transform duration-300",
-                isResumeHovered && item.name === 'Resume' ? "rotate-12" : ""
-              )} />}
-              
-              {activeSection === item.href.substring(1) && item.href.startsWith('#') && (
-                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
-              )}
-              {item.name}
-            </a>
-          ))}
+        <DesktopNav navItems={navItems} activeSection={activeSection} />
+        
+        <div className="hidden md:flex items-center">
+          <ContactButton />
           
-          <Button 
-            className={cn(
-              "ml-4 relative group overflow-hidden transition-all duration-300",
-              isContactHovered ? "bg-background text-primary scale-105" : "bg-primary hover:bg-primary/80 text-primary-foreground"
-            )}
-            onMouseEnter={() => setIsContactHovered(true)}
-            onMouseLeave={() => setIsContactHovered(false)}
-            onClick={() => window.location.href = '/contact'}
-          >
-            <span className="flex items-center gap-2 relative z-10">
-              Let's Talk
-              <MessageSquare className={cn(
-                "h-4 w-4 transition-all duration-300",
-                isContactHovered ? "rotate-12" : ""
-              )} />
-            </span>
-            <span className={cn(
-              "absolute inset-0 border-2 border-primary rounded-md transition-all duration-300",
-              isContactHovered ? "scale-105 opacity-100" : "scale-90 opacity-0"
-            )}></span>
-          </Button>
-
           <Button 
             variant="ghost" 
             size="icon" 
@@ -173,95 +74,14 @@ export function NavBar() {
           >
             {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
-        </nav>
+        </div>
         
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden hover:bg-muted/50 hover:scale-110 transition-all duration-300">
-              <Menu className="h-6 w-6" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="bg-secondary/90 backdrop-blur-xl border-white/10">
-            <div className="flex flex-col h-full">
-              <div className="flex items-center justify-between mb-8">
-                <span className="text-xl font-bold">
-                  <span className="text-primary">D</span>hirendra
-                </span>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={toggleTheme}
-                  className="hover:bg-muted/50 hover:scale-110 transition-all duration-300"
-                  aria-label="Toggle theme"
-                >
-                  {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-                </Button>
-              </div>
-              
-              <nav className="flex flex-col space-y-4">
-                {navItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      navigateTo(item.href, item.name);
-                    }}
-                    className={cn(
-                      "px-4 py-3 text-base font-medium transition-all duration-200 rounded-md hover:scale-105 flex items-center gap-2",
-                      activeSection === item.href.substring(1) && item.href.startsWith('#')
-                        ? "bg-muted/50 text-primary" 
-                        : "text-foreground/80 hover:bg-muted/30 hover:text-foreground",
-                      item.name === 'Resume' && "bg-primary/10 hover:bg-primary/20"
-                    )}
-                  >
-                    {item.icon && <item.icon className="h-4 w-4" />}
-                    {item.name}
-                  </a>
-                ))}
-              </nav>
-              
-              <div className="mt-auto">
-                <Button 
-                  className="w-full mb-4 hover:bg-primary/80 hover:scale-105 transition-all duration-300 group"
-                  onClick={() => window.location.href = '/contact'}
-                >
-                  <span className="flex items-center gap-2">
-                    Let's Talk
-                    <MessageSquare className="h-4 w-4 group-hover:rotate-12 transition-transform duration-300" />
-                  </span>
-                </Button>
-                
-                <div className="flex items-center justify-center space-x-3 pt-4 border-t border-white/10">
-                  <a
-                    href={personalInfo.socials.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-full hover:bg-white/10 transition-colors hover:scale-110 duration-300"
-                  >
-                    <Github className="h-5 w-5" />
-                  </a>
-                  <a
-                    href={personalInfo.socials.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-full hover:bg-white/10 transition-colors hover:scale-110 duration-300"
-                  >
-                    <Linkedin className="h-5 w-5" />
-                  </a>
-                  <a
-                    href={personalInfo.socials.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-full hover:bg-white/10 transition-colors hover:scale-110 duration-300"
-                  >
-                    <Twitter className="h-5 w-5" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
+        <MobileNav 
+          navItems={navItems} 
+          activeSection={activeSection} 
+          theme={theme} 
+          toggleTheme={toggleTheme} 
+        />
       </div>
     </header>
   );
