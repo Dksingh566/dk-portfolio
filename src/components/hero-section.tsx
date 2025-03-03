@@ -1,7 +1,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, MousePointer, Code, Eye, Sparkles, ArrowDown } from 'lucide-react';
+import { ArrowRight, MousePointer, Code, Eye, Sparkles, ArrowDown, Star } from 'lucide-react';
 import { TypeAnimation } from 'react-type-animation';
 import { personalInfo } from '@/lib/data';
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
@@ -13,6 +13,7 @@ export function HeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const [isHovering, setIsHovering] = useState(false);
+  const [animateNow, setAnimateNow] = useState(false);
   const controls = useAnimation();
   
   // Track mouse movement for parallax effect
@@ -46,8 +47,12 @@ export function HeroSection() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsHeroVisible(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          // Start animation sequence when section becomes visible
+          setTimeout(() => setAnimateNow(true), 300);
+        }
       },
-      { threshold: 0.5 }
+      { threshold: 0.3 }
     );
     
     if (heroSectionRef.current) {
@@ -86,10 +91,20 @@ export function HeroSection() {
       });
     }
   };
+
+  const handleButtonHover = () => {
+    const buttonGlow = document.querySelector('.button-glow');
+    if (buttonGlow) {
+      buttonGlow.classList.add('pulse-animation');
+      setTimeout(() => {
+        buttonGlow.classList.remove('pulse-animation');
+      }, 1000);
+    }
+  };
   
   return (
     <section 
-      className={`min-h-screen relative flex flex-col items-center justify-center px-4 md:px-8 lg:px-12 overflow-hidden transition-opacity duration-700 ${
+      className={`min-h-screen relative flex flex-col items-center justify-center px-4 md:px-8 lg:px-12 overflow-hidden transition-opacity duration-1000 ${
         isHeroVisible ? "opacity-100" : "opacity-0"
       }`} 
       id="home" 
@@ -160,7 +175,8 @@ export function HeroSection() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-12 px-2 leading-relaxed">
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-12 px-2 leading-relaxed
+            xs:text-[10px] xs:leading-tight">
             {personalInfo.bio}
           </p>
         </motion.div>
@@ -171,40 +187,51 @@ export function HeroSection() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:space-x-4"
         >
-          <Button 
-            size="lg" 
-            className="group w-full sm:w-auto relative overflow-hidden"
-            onClick={handleProjectsClick}
-            whileHover={{ scale: 1.05 }}
+          <motion.div 
+            whileHover={{ scale: 1.05 }} 
             whileTap={{ scale: 0.95 }}
+            className="w-full sm:w-auto"
           >
-            <motion.span 
-              className="relative z-10 flex items-center"
-              animate={{ x: [0, 5, 0] }}
-              transition={{ repeat: Infinity, duration: 2 }}
+            <Button 
+              size="lg" 
+              className="group w-full sm:w-auto relative overflow-hidden"
+              onClick={handleProjectsClick}
+              onMouseEnter={handleButtonHover}
             >
-              My Projects
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </motion.span>
-            <span className="absolute inset-0 w-full h-full bg-primary/80 animate-pulse"></span>
-          </Button>
-          <Button 
-            size="lg" 
-            variant="outline" 
-            className="w-full sm:w-auto hover:bg-primary/10 transition-colors relative group"
-            onClick={() => {
-              window.location.href = '/contact';
-              toast("Let's connect!", {
-                description: "I'm excited to hear about your project!",
-                icon: <Eye className="h-5 w-5 text-primary" />
-              });
-            }}
-            whileHover={{ scale: 1.05 }}
+              <motion.span 
+                className="relative z-10 flex items-center"
+                animate={{ x: [0, 5, 0] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+              >
+                My Projects
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </motion.span>
+              <span className="absolute inset-0 w-full h-full bg-primary/80 animate-pulse button-glow"></span>
+            </Button>
+          </motion.div>
+          
+          <motion.div 
+            whileHover={{ scale: 1.05 }} 
             whileTap={{ scale: 0.95 }}
+            className="w-full sm:w-auto"
           >
-            <span className="relative z-10">Contact Me</span>
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
-          </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="w-full sm:w-auto hover:bg-primary/10 transition-colors relative group"
+              onClick={() => {
+                window.location.href = '/contact';
+                toast("Let's connect!", {
+                  description: "I'm excited to hear about your project!",
+                  icon: <Eye className="h-5 w-5 text-primary" />
+                });
+              }}
+              onMouseEnter={handleButtonHover}
+            >
+              <span className="relative z-10">Contact Me</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+            </Button>
+          </motion.div>
         </motion.div>
         
         <motion.div 
@@ -220,11 +247,14 @@ export function HeroSection() {
               target="_blank" 
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors p-2 relative group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={animateNow ? { 
+                opacity: 1, 
+                y: 0,
+                transition: { delay: 0.8 + index * 0.1 }
+              } : {}}
               whileHover={{ scale: 1.1 }}
               onHoverStart={() => toast.info(`View my ${platform} profile`, { duration: 1500 })}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 + index * 0.1 }}
             >
               <span className="capitalize text-sm sm:text-base font-medium">{platform}</span>
               <motion.span 
@@ -237,14 +267,14 @@ export function HeroSection() {
         </motion.div>
       </div>
       
-      {/* Animated Background */}
+      {/* Enhanced Background with Floating Elements */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-primary/10 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
         
         <div className="absolute bottom-0 left-0 right-0 h-[300px] bg-gradient-to-t from-background to-transparent"></div>
         
-        {/* Interactive floating particles */}
-        {Array.from({ length: 12 }).map((_, i) => (
+        {/* Enhanced interactive floating particles */}
+        {Array.from({ length: 15 }).map((_, i) => (
           <motion.div
             key={i}
             className={`absolute rounded-full opacity-${20 + i * 5} bg-primary/50`}
@@ -268,9 +298,78 @@ export function HeroSection() {
             }}
           />
         ))}
+        
+        {/* Add decorative stars/elements */}
+        {Array.from({ length: 5 }).map((_, i) => (
+          <motion.div
+            key={`star-${i}`}
+            className="absolute text-primary/40"
+            style={{
+              top: `${Math.random() * 90 + 5}%`,
+              left: `${Math.random() * 90 + 5}%`,
+              transform: `rotate(${Math.random() * 45}deg) scale(${0.7 + Math.random() * 0.5})`,
+            }}
+            animate={{
+              opacity: [0.3, 0.8, 0.3],
+              rotate: [0, 180, 360],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 8 + i * 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.8
+            }}
+          >
+            <Star className="h-5 w-5 stroke-[1.5px]" />
+          </motion.div>
+        ))}
+        
+        {/* Floating geometric shapes */}
+        {['circle', 'triangle', 'square', 'hexagon'].map((shape, i) => {
+          // Define shape JSX based on the shape type
+          let shapeJSX;
+          if (shape === 'circle') {
+            shapeJSX = <div className="w-full h-full rounded-full border-2 border-primary/20"></div>;
+          } else if (shape === 'triangle') {
+            shapeJSX = <div className="w-0 h-0 border-l-[15px] border-r-[15px] border-b-[25px] border-l-transparent border-r-transparent border-b-primary/20"></div>;
+          } else if (shape === 'square') {
+            shapeJSX = <div className="w-full h-full border-2 border-primary/20"></div>;
+          } else {
+            // Hexagon (simplified as square with rotation)
+            shapeJSX = <div className="w-full h-full border-2 border-primary/20 rotate-45"></div>;
+          }
+          
+          return (
+            <motion.div
+              key={`shape-${i}`}
+              className="absolute"
+              style={{
+                width: shape === 'triangle' ? 'auto' : `${20 + i * 5}px`,
+                height: shape === 'triangle' ? 'auto' : `${20 + i * 5}px`,
+                top: `${10 + i * 20}%`,
+                left: `${5 + i * 25}%`,
+              }}
+              animate={{
+                y: [0, -20, 0],
+                x: [0, 10, 0],
+                rotate: [0, 360],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{
+                duration: 15,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: i * 2
+              }}
+            >
+              {shapeJSX}
+            </motion.div>
+          );
+        })}
       </div>
       
-      {/* Enhanced mouse scroll indicator */}
+      {/* Enhanced scroll indicator with pulse animation */}
       <AnimatePresence>
         {showScrollIndicator && (
           <motion.div 
@@ -281,14 +380,33 @@ export function HeroSection() {
             transition={{ delay: 2, duration: 1 }}
           >
             <motion.div 
-              className="flex flex-col items-center"
+              className="flex flex-col items-center cursor-pointer"
               animate={{ y: [0, 5, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
+              onClick={() => {
+                const aboutSection = document.getElementById('about');
+                if (aboutSection) {
+                  aboutSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              whileHover={{ scale: 1.1 }}
             >
-              <ArrowDown className="h-5 w-5 text-primary mb-2" />
+              <motion.div
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 1.2, repeat: Infinity }}
+              >
+                <ArrowDown className="h-5 w-5 text-primary mb-2" />
+              </motion.div>
               <motion.div 
                 className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-primary/50 rounded-full flex justify-center p-1 mx-auto"
-                animate={{ opacity: [0.5, 1, 0.5] }}
+                animate={{ 
+                  opacity: [0.5, 1, 0.5],
+                  boxShadow: [
+                    '0 0 0px rgba(74, 222, 128, 0.3)',
+                    '0 0 10px rgba(74, 222, 128, 0.6)',
+                    '0 0 0px rgba(74, 222, 128, 0.3)'
+                  ]
+                }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
                 <motion.div 
@@ -303,10 +421,10 @@ export function HeroSection() {
         )}
       </AnimatePresence>
 
-      {/* Animated gradient border */}
+      {/* Enhanced animated gradient border with glow effect */}
       <div className="absolute inset-x-4 top-4 bottom-4 border border-primary/20 rounded-xl pointer-events-none overflow-hidden">
         <motion.div 
-          className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent"
+          className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent shadow-[0_0_8px_rgba(74,222,128,0.6)]"
           animate={{ 
             left: ['-100%', '100%'],
           }}
@@ -317,7 +435,7 @@ export function HeroSection() {
           }}
         />
         <motion.div 
-          className="absolute bottom-0 right-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent"
+          className="absolute bottom-0 right-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent shadow-[0_0_8px_rgba(74,222,128,0.6)]"
           animate={{ 
             right: ['-100%', '100%'],
           }}
@@ -327,7 +445,51 @@ export function HeroSection() {
             ease: "linear"
           }}
         />
+        <motion.div 
+          className="absolute left-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-primary/80 to-transparent shadow-[0_0_8px_rgba(74,222,128,0.6)]"
+          animate={{ 
+            top: ['-100%', '100%'],
+          }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: 8,
+            ease: "linear"
+          }}
+        />
+        <motion.div 
+          className="absolute right-0 bottom-0 h-full w-[2px] bg-gradient-to-b from-transparent via-primary/80 to-transparent shadow-[0_0_8px_rgba(74,222,128,0.6)]"
+          animate={{ 
+            bottom: ['-100%', '100%'],
+          }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: 8,
+            ease: "linear"
+          }}
+        />
       </div>
+      
+      {/* Add custom animation for button glows */}
+      <style jsx>{`
+        @keyframes pulse-animation {
+          0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+          70% { box-shadow: 0 0 0 15px rgba(74, 222, 128, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+        }
+        .pulse-animation {
+          animation: pulse-animation 1s cubic-bezier(0.4, 0, 0.6, 1) 1;
+        }
+        
+        /* Add extra responsive styles for very small screens */
+        @media (max-width: 360px) {
+          .xs\:text-\[10px\] {
+            font-size: 10px;
+          }
+          .xs\:leading-tight {
+            line-height: 1.2;
+          }
+        }
+      `}</style>
     </section>
   );
 }
