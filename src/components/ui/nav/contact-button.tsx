@@ -2,10 +2,12 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export function ContactButton() {
   const [isContactHovered, setIsContactHovered] = React.useState(false);
+  const navigate = useNavigate();
 
   return (
     <Button 
@@ -15,14 +17,20 @@ export function ContactButton() {
       )}
       onMouseEnter={() => setIsContactHovered(true)}
       onMouseLeave={() => setIsContactHovered(false)}
-      onClick={() => window.location.href = '/contact'}
+      onClick={() => navigate('/contact')}
     >
       <span className="flex items-center gap-2 relative z-10">
-        Let's Talk
-        <MessageSquare className={cn(
-          "h-4 w-4 transition-all duration-300",
-          isContactHovered ? "rotate-12" : ""
-        )} />
+        {isContactHovered ? (
+          <>
+            Let's Connect
+            <Sparkles className="h-4 w-4 animate-pulse" />
+          </>
+        ) : (
+          <>
+            Let's Talk
+            <MessageSquare className="h-4 w-4" />
+          </>
+        )}
       </span>
       <span className={cn(
         "absolute inset-0 border-2 border-primary rounded-md transition-all duration-300",

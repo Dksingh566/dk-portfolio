@@ -1,9 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavBar } from '@/components/ui/nav-bar';
 import { Footer } from '@/components/ui/footer';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
+import { Textarea } from '@/components/ui/textarea';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Send, 
   Mail, 
@@ -15,12 +16,16 @@ import {
   ArrowRight,
   CheckCircle,
   FileText,
-  Download
+  Download,
+  Sparkles,
+  Heart,
+  Star
 } from 'lucide-react';
 import { ThemeProvider } from '@/hooks/use-theme';
 import { useElementInView } from '@/hooks/use-intersection-observer';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { personalInfo } from '@/lib/data';
+import { toast } from 'sonner';
 
 const ContactPage = () => {
   const [name, setName] = useState('');
@@ -31,24 +36,76 @@ const ContactPage = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
   
   const [formRef, isFormVisible] = useElementInView<HTMLFormElement>({ threshold: 0.1 });
   const [infoRef, isInfoVisible] = useElementInView<HTMLDivElement>({ threshold: 0.1 });
 
+  // Mouse position for interactive elements
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  // Track mouse movement for interactive effects
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: e.clientX,
+        y: e.clientY
+      });
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Form validation
+  const validateForm = () => {
+    const errors: {[key: string]: string} = {};
+    
+    if (!name.trim()) errors.name = "Name is required";
+    
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Email is invalid";
+    }
+    
+    if (!subject.trim()) errors.subject = "Subject is required";
+    if (!message.trim()) errors.message = "Message is required";
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      toast.error("Please fill all required fields correctly");
+      return;
+    }
+    
     setIsSubmitting(true);
+    
+    // Show sending toast
+    toast.loading("Sending your message...");
     
     // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
       setIsDialogOpen(true);
+      
+      // Remove loading toast and show success
+      toast.dismiss();
+      toast.success("Message sent successfully!");
+      
       // Reset form
       setName('');
       setEmail('');
       setMessage('');
       setSubject('');
+      setFormErrors({});
     }, 1500);
   };
 
@@ -127,6 +184,49 @@ const ContactPage = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
   };
+  
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+  
+  const itemVariant = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+
+  // Interactive particle component
+  const ContactParticle = ({ index }: { index: number }) => {
+    return (
+      <motion.div
+        className="absolute bg-primary/20 rounded-full z-0"
+        style={{
+          width: Math.random() * 10 + 5,
+          height: Math.random() * 10 + 5,
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+        }}
+        animate={{
+          x: [0, Math.random() * 40 - 20],
+          y: [0, Math.random() * 40 - 20],
+          opacity: [0.2, 0.6, 0.2],
+          scale: [1, 1.2, 1]
+        }}
+        transition={{
+          repeat: Infinity,
+          repeatType: "reverse",
+          duration: Math.random() * 5 + 5,
+          delay: index * 0.2
+        }}
+      />
+    );
+  };
 
   return (
     <ThemeProvider>
@@ -135,17 +235,39 @@ const ContactPage = () => {
         
         <main className="flex-grow">
           {/* Hero section */}
-          <section className="relative py-20 md:py-28">
+          <section className="relative py-20 md:py-28 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent z-0"></div>
+            
+            {/* Interactive background particles */}
+            {Array.from({ length: 20 }).map((_, index) => (
+              <ContactParticle key={index} index={index} />
+            ))}
+            
             <div className="container-custom mx-auto relative z-10">
               <div className="text-center mb-16">
                 <motion.h1 
                   initial="hidden"
                   animate="visible"
                   variants={fadeInUp}
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+                  className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 relative inline-block"
                 >
-                  <span className="text-gradient">Get in Touch</span>
+                  <span className="text-gradient relative">
+                    Get in Touch
+                    <motion.span
+                      className="absolute -right-8 -top-8 text-primary"
+                      animate={{
+                        rotate: [0, 15, 0, -15, 0],
+                        scale: [1, 1.2, 1, 1.2, 1]
+                      }}
+                      transition={{
+                        duration: 5,
+                        repeat: Infinity,
+                        repeatType: "loop"
+                      }}
+                    >
+                      <Sparkles className="h-6 w-6 md:h-8 md:w-8" />
+                    </motion.span>
+                  </span>
                 </motion.h1>
                 <motion.p 
                   initial="hidden"
@@ -164,82 +286,158 @@ const ContactPage = () => {
                 <motion.form 
                   ref={formRef}
                   onSubmit={handleSubmit}
-                  className="glass-panel p-8 max-w-xl mx-auto lg:mx-0 w-full"
+                  className="glass-panel p-8 max-w-xl mx-auto lg:mx-0 w-full relative"
                   initial="hidden"
                   animate={isFormVisible ? "visible" : "hidden"}
                   variants={fadeInUp}
                 >
-                  <h2 className="text-2xl font-bold mb-6">Send Me a Message</h2>
+                  {/* Decorative effect for active form */}
+                  <AnimatePresence>
+                    {focusedField && (
+                      <motion.div 
+                        className="absolute -inset-px rounded-lg border-2 border-primary/40 z-0 pointer-events-none"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="absolute top-0 right-0 w-20 h-20 bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-xl"></div>
+                        <div className="absolute bottom-0 left-0 w-20 h-20 bg-primary/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-xl"></div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   
-                  <div className="space-y-4">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium mb-1">
-                        Your Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full px-4 py-3 rounded-md border border-input bg-background focus:border-primary focus:ring-1 focus:ring-primary transition-colors duration-200 hover:border-violet-500"
-                        placeholder="John Doe"
-                        required
-                      />
-                    </div>
+                  <div className="relative z-10">
+                    <h2 className="text-2xl font-bold mb-6 flex items-center">
+                      <span>Send Me a Message</span>
+                      <motion.span
+                        animate={{
+                          y: [0, -5, 0],
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          repeatType: "loop"
+                        }}
+                        className="ml-2"
+                      >
+                        <Heart className="h-5 w-5 text-primary" />
+                      </motion.span>
+                    </h2>
                     
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-1">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-4 py-3 rounded-md border border-input bg-background focus:border-primary focus:ring-1 focus:ring-primary transition-colors duration-200 hover:border-violet-500"
-                        placeholder="you@example.com"
-                        required
-                      />
+                    <div className="space-y-4">
+                      <div>
+                        <label htmlFor="name" className="block text-sm font-medium mb-1">
+                          Your Name
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          onFocus={() => setFocusedField('name')}
+                          onBlur={() => setFocusedField(null)}
+                          className={cn(
+                            "w-full px-4 py-3 rounded-md border bg-background transition-colors duration-200 hover:border-violet-500 focus:border-primary focus:ring-1 focus:ring-primary",
+                            formErrors.name ? "border-destructive" : "border-input"
+                          )}
+                          placeholder="John Doe"
+                        />
+                        {formErrors.name && (
+                          <p className="text-destructive text-sm mt-1">{formErrors.name}</p>
+                        )}
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="email" className="block text-sm font-medium mb-1">
+                          Email Address
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          onFocus={() => setFocusedField('email')}
+                          onBlur={() => setFocusedField(null)}
+                          className={cn(
+                            "w-full px-4 py-3 rounded-md border bg-background transition-colors duration-200 hover:border-violet-500 focus:border-primary focus:ring-1 focus:ring-primary",
+                            formErrors.email ? "border-destructive" : "border-input"
+                          )}
+                          placeholder="you@example.com"
+                        />
+                        {formErrors.email && (
+                          <p className="text-destructive text-sm mt-1">{formErrors.email}</p>
+                        )}
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="subject" className="block text-sm font-medium mb-1">
+                          Subject
+                        </label>
+                        <input
+                          type="text"
+                          id="subject"
+                          value={subject}
+                          onChange={(e) => setSubject(e.target.value)}
+                          onFocus={() => setFocusedField('subject')}
+                          onBlur={() => setFocusedField(null)}
+                          className={cn(
+                            "w-full px-4 py-3 rounded-md border bg-background transition-colors duration-200 hover:border-violet-500 focus:border-primary focus:ring-1 focus:ring-primary",
+                            formErrors.subject ? "border-destructive" : "border-input"
+                          )}
+                          placeholder="Project Inquiry"
+                        />
+                        {formErrors.subject && (
+                          <p className="text-destructive text-sm mt-1">{formErrors.subject}</p>
+                        )}
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="message" className="block text-sm font-medium mb-1">
+                          Message
+                        </label>
+                        <Textarea
+                          id="message"
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          onFocus={() => setFocusedField('message')}
+                          onBlur={() => setFocusedField(null)}
+                          rows={5}
+                          className={cn(
+                            "w-full px-4 py-3 rounded-md border bg-background transition-colors duration-200 hover:border-violet-500 focus:border-primary focus:ring-1 focus:ring-primary resize-none",
+                            formErrors.message ? "border-destructive" : "border-input"
+                          )}
+                          placeholder="Tell me about your project or inquiry..."
+                        />
+                        {formErrors.message && (
+                          <p className="text-destructive text-sm mt-1">{formErrors.message}</p>
+                        )}
+                      </div>
+                      
+                      <Button 
+                        type="submit" 
+                        disabled={isSubmitting} 
+                        className="w-full py-3 bg-primary hover:bg-violet-600 text-primary-foreground transition-all duration-300 hover:scale-[1.02] relative overflow-hidden group"
+                      >
+                        <span className="relative z-10 flex items-center justify-center">
+                          {isSubmitting ? 'Sending...' : 'Send Message'} 
+                          <Send className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                        </span>
+                        <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-violet-600 via-primary to-violet-600 bg-[length:200%_100%] group-hover:animate-background-shine z-0"></span>
+                      </Button>
+                      
+                      <motion.div 
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ 
+                          opacity: isSuccess ? 1 : 0,
+                          height: isSuccess ? 'auto' : 0
+                        }}
+                        className="bg-primary/10 border border-primary/20 rounded-lg p-4 text-center overflow-hidden"
+                      >
+                        <CheckCircle className="h-6 w-6 text-primary mx-auto mb-2" />
+                        <p>Thank you for your message! I'll get back to you soon.</p>
+                      </motion.div>
                     </div>
-                    
-                    <div>
-                      <label htmlFor="subject" className="block text-sm font-medium mb-1">
-                        Subject
-                      </label>
-                      <input
-                        type="text"
-                        id="subject"
-                        value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
-                        className="w-full px-4 py-3 rounded-md border border-input bg-background focus:border-primary focus:ring-1 focus:ring-primary transition-colors duration-200 hover:border-violet-500"
-                        placeholder="Project Inquiry"
-                        required
-                      />
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium mb-1">
-                        Message
-                      </label>
-                      <textarea
-                        id="message"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        rows={5}
-                        className="w-full px-4 py-3 rounded-md border border-input bg-background focus:border-primary focus:ring-1 focus:ring-primary transition-colors duration-200 resize-none hover:border-violet-500"
-                        placeholder="Tell me about your project or inquiry..."
-                        required
-                      />
-                    </div>
-                    
-                    <Button 
-                      type="submit" 
-                      disabled={isSubmitting} 
-                      className="w-full py-3 bg-primary hover:bg-violet-600 text-primary-foreground transition-all duration-300 hover:scale-[1.02] group"
-                    >
-                      {isSubmitting ? 'Sending...' : 'Send Message'} 
-                      <Send className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </Button>
                   </div>
                 </motion.form>
                 
@@ -248,10 +446,16 @@ const ContactPage = () => {
                   ref={infoRef}
                   initial="hidden"
                   animate={isInfoVisible ? "visible" : "hidden"}
-                  variants={fadeInUp}
+                  variants={staggerContainer}
                   className="space-y-8 max-w-xl mx-auto lg:mx-0 w-full"
                 >
-                  <div className="glass-panel p-8 mb-8 hover:border-violet-500/30 transition-colors duration-300">
+                  <motion.div 
+                    variants={itemVariant}
+                    className="glass-panel p-8 mb-8 hover:border-violet-500/30 transition-colors duration-300 relative overflow-hidden group"
+                    whileHover={{ scale: 1.01 }}
+                  >
+                    <div className="absolute right-0 bottom-0 w-32 h-32 bg-primary/5 rounded-full group-hover:bg-primary/10 transition-colors duration-300 blur-xl"></div>
+                    
                     <div className="relative w-full aspect-square mb-6 overflow-hidden rounded-lg">
                       <img 
                         src="/lovable-uploads/05eda115-dd99-4bf1-b9a4-e1456f7bdbb3.png" 
@@ -261,65 +465,106 @@ const ContactPage = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
                     </div>
                     
-                    <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
+                    <h2 className="text-2xl font-bold mb-6 flex items-center">
+                      <span>Contact Information</span>
+                      <Star className="h-5 w-5 text-primary ml-2" />
+                    </h2>
                     
-                    <div className="space-y-6">
+                    <motion.div variants={staggerContainer} className="space-y-6">
                       {contactMethods.map((method, index) => (
-                        <a 
-                          href={method.link} 
+                        <motion.a 
+                          variants={itemVariant}
                           key={index}
+                          href={method.link} 
                           target={method.title === 'Location' ? '_blank' : undefined}
                           rel="noopener noreferrer"
                           className="flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 dark:hover:bg-black/10 transition-colors duration-300 group"
+                          whileHover={{ scale: 1.02, x: 5 }}
                         >
                           <div className="mt-1 group-hover:text-violet-500 transition-colors">{method.icon}</div>
                           <div>
                             <h3 className="font-medium text-foreground group-hover:text-violet-500 transition-colors">{method.title}</h3>
                             <p className="text-muted-foreground mt-1">{method.value}</p>
                           </div>
-                        </a>
+                        </motion.a>
                       ))}
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
                   
-                  <div className="glass-panel p-8 hover:border-violet-500/30 transition-colors duration-300">
-                    <h2 className="text-2xl font-bold mb-6">Connect With Me</h2>
+                  <motion.div 
+                    variants={itemVariant}
+                    className="glass-panel p-8 hover:border-violet-500/30 transition-colors duration-300 relative overflow-hidden"
+                    whileHover={{ scale: 1.01 }}
+                  >
+                    <div className="absolute -right-20 -bottom-20 w-56 h-56 bg-primary/5 rounded-full blur-xl"></div>
                     
-                    <div className="flex flex-wrap gap-4">
+                    <h2 className="text-2xl font-bold mb-6 relative z-10">Connect With Me</h2>
+                    
+                    <motion.div
+                      variants={staggerContainer}
+                      className="flex flex-wrap gap-4 relative z-10"
+                    >
                       {socialLinks.map((social, index) => (
-                        <a
+                        <motion.a
                           key={index}
+                          variants={itemVariant}
                           href={social.link}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center gap-2 px-4 py-3 rounded-lg border border-input hover:border-violet-500 hover:text-violet-500 transition-all duration-300 hover:scale-105"
+                          whileHover={{ 
+                            y: -3,
+                            boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+                          }}
                         >
                           {social.icon}
                           <span>{social.name}</span>
-                        </a>
+                        </motion.a>
                       ))}
                       
-                      <Button
+                      <motion.button
+                        variants={itemVariant}
                         onClick={() => setIsResumeOpen(true)}
-                        variant="outline"
-                        className="flex items-center gap-2 px-4 py-3 rounded-lg border border-input hover:border-violet-500 hover:text-violet-500 transition-all duration-300 hover:scale-105 h-auto"
+                        className="flex items-center gap-2 px-4 py-3 rounded-lg border border-input hover:border-violet-500 hover:text-violet-500 transition-all duration-300 hover:scale-105"
+                        whileHover={{ 
+                          y: -3,
+                          boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+                        }}
                       >
                         <FileText className="h-5 w-5" />
                         <span>View Resume</span>
-                      </Button>
-                    </div>
+                      </motion.button>
+                    </motion.div>
                     
-                    <div className="mt-8 p-5 bg-primary/10 rounded-lg border border-primary/20 hover:border-violet-500/30 transition-colors duration-300">
-                      <h3 className="font-medium text-foreground flex items-center gap-2">
+                    <motion.div 
+                      variants={itemVariant}
+                      className="mt-8 p-5 bg-primary/10 rounded-lg border border-primary/20 hover:border-violet-500/30 transition-colors duration-300 relative overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-violet-500/5 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <h3 className="font-medium text-foreground flex items-center gap-2 relative z-10">
                         <CheckCircle className="h-5 w-5 text-primary" /> 
                         Quick Response
                       </h3>
-                      <p className="text-muted-foreground mt-2">
+                      <p className="text-muted-foreground mt-2 relative z-10">
                         I typically respond to all inquiries within 24-48 hours. 
                         Looking forward to hearing from you!
                       </p>
-                    </div>
-                  </div>
+                      <motion.div 
+                        className="absolute bottom-0 right-0 h-8 w-8 text-primary/20"
+                        animate={{
+                          rotate: [0, 360],
+                          opacity: [0.2, 0.5, 0.2],
+                        }}
+                        transition={{
+                          duration: 10,
+                          repeat: Infinity,
+                          repeatType: "loop"
+                        }}
+                      >
+                        <Sparkles className="h-full w-full" />
+                      </motion.div>
+                    </motion.div>
+                  </motion.div>
                 </motion.div>
               </div>
             </div>
