@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, MousePointer, Code, Eye, Sparkles, ArrowDown, Star } from 'lucide-react';
@@ -16,14 +15,12 @@ export function HeroSection() {
   const [animateNow, setAnimateNow] = useState(false);
   const controls = useAnimation();
   
-  // Track mouse movement for parallax effect
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX, clientY } = e;
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
       
-      // Calculate distance from center (normalized between -1 and 1)
       const moveX = (clientX - centerX) / centerX;
       const moveY = (clientY - centerY) / centerY;
       
@@ -34,7 +31,6 @@ export function HeroSection() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
   
-  // Parallax effect on mouse movement
   useEffect(() => {
     controls.start({
       x: mousePosition.x * 15,
@@ -48,7 +44,6 @@ export function HeroSection() {
       ([entry]) => {
         setIsHeroVisible(entry.isIntersecting);
         if (entry.isIntersecting) {
-          // Start animation sequence when section becomes visible
           setTimeout(() => setAnimateNow(true), 300);
         }
       },
@@ -66,7 +61,6 @@ export function HeroSection() {
     };
   }, []);
 
-  // Hide scroll indicator after scrolling
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 100) {
@@ -267,13 +261,11 @@ export function HeroSection() {
         </motion.div>
       </div>
       
-      {/* Enhanced Background with Floating Elements */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-primary/10 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
         
         <div className="absolute bottom-0 left-0 right-0 h-[300px] bg-gradient-to-t from-background to-transparent"></div>
         
-        {/* Enhanced interactive floating particles */}
         {Array.from({ length: 15 }).map((_, i) => (
           <motion.div
             key={i}
@@ -299,7 +291,6 @@ export function HeroSection() {
           />
         ))}
         
-        {/* Add decorative stars/elements */}
         {Array.from({ length: 5 }).map((_, i) => (
           <motion.div
             key={`star-${i}`}
@@ -325,9 +316,7 @@ export function HeroSection() {
           </motion.div>
         ))}
         
-        {/* Floating geometric shapes */}
         {['circle', 'triangle', 'square', 'hexagon'].map((shape, i) => {
-          // Define shape JSX based on the shape type
           let shapeJSX;
           if (shape === 'circle') {
             shapeJSX = <div className="w-full h-full rounded-full border-2 border-primary/20"></div>;
@@ -336,7 +325,6 @@ export function HeroSection() {
           } else if (shape === 'square') {
             shapeJSX = <div className="w-full h-full border-2 border-primary/20"></div>;
           } else {
-            // Hexagon (simplified as square with rotation)
             shapeJSX = <div className="w-full h-full border-2 border-primary/20 rotate-45"></div>;
           }
           
@@ -369,7 +357,6 @@ export function HeroSection() {
         })}
       </div>
       
-      {/* Enhanced scroll indicator with pulse animation */}
       <AnimatePresence>
         {showScrollIndicator && (
           <motion.div 
@@ -421,7 +408,6 @@ export function HeroSection() {
         )}
       </AnimatePresence>
 
-      {/* Enhanced animated gradient border with glow effect */}
       <div className="absolute inset-x-4 top-4 bottom-4 border border-primary/20 rounded-xl pointer-events-none overflow-hidden">
         <motion.div 
           className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent shadow-[0_0_8px_rgba(74,222,128,0.6)]"
@@ -469,8 +455,8 @@ export function HeroSection() {
         />
       </div>
       
-      {/* Add custom animation for button glows */}
-      <style jsx>{`
+      <style>
+        {`
         @keyframes pulse-animation {
           0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
           70% { box-shadow: 0 0 0 15px rgba(74, 222, 128, 0); }
@@ -480,16 +466,16 @@ export function HeroSection() {
           animation: pulse-animation 1s cubic-bezier(0.4, 0, 0.6, 1) 1;
         }
         
-        /* Add extra responsive styles for very small screens */
         @media (max-width: 360px) {
-          .xs\:text-\[10px\] {
+          .xs\\:text-\\[10px\\] {
             font-size: 10px;
           }
-          .xs\:leading-tight {
+          .xs\\:leading-tight {
             line-height: 1.2;
           }
         }
-      `}</style>
+        `}
+      </style>
     </section>
   );
 }
