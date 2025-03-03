@@ -15,14 +15,21 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ navItems, activeSection, theme, toggleTheme }: MobileNavProps) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const handleNavigation = (href: string, name: string) => {
+    navigateTo(href, name);
+    setIsOpen(false);
+  };
+
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="md:hidden hover:bg-muted/50 hover:scale-110 transition-all duration-300">
           <Menu className="h-6 w-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="bg-secondary/90 backdrop-blur-xl border-white/10">
+      <SheetContent side="right" className="bg-secondary/90 backdrop-blur-xl border-white/10 w-[280px] px-4 py-8">
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between mb-8">
             <span className="text-xl font-bold">
@@ -46,7 +53,7 @@ export function MobileNav({ navItems, activeSection, theme, toggleTheme }: Mobil
                 href={item.href}
                 onClick={(e) => {
                   e.preventDefault();
-                  navigateTo(item.href, item.name);
+                  handleNavigation(item.href, item.name);
                 }}
                 className={cn(
                   "px-4 py-3 text-base font-medium transition-all duration-200 rounded-md hover:scale-105 flex items-center gap-2",
@@ -65,7 +72,10 @@ export function MobileNav({ navItems, activeSection, theme, toggleTheme }: Mobil
           <div className="mt-auto">
             <Button 
               className="w-full mb-4 hover:bg-primary/80 hover:scale-105 transition-all duration-300 group"
-              onClick={() => window.location.href = '/contact'}
+              onClick={() => {
+                window.location.href = '/contact';
+                setIsOpen(false);
+              }}
             >
               <span className="flex items-center gap-2">
                 Let's Talk

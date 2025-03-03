@@ -23,7 +23,10 @@ export const navigateTo = (href: string, name: string) => {
     // Internal section navigation
     const element = document.getElementById(href.substring(1));
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // Small delay for mobile menu to close before scrolling
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
     }
     
     // Special case for Resume

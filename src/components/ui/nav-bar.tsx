@@ -54,8 +54,12 @@ export function NavBar() {
     >
       <div className="container-custom mx-auto flex items-center justify-between">
         <a 
-          href="/"
+          href="#home"
           className="text-xl font-bold text-foreground hover:text-primary transition-colors duration-300 transform hover:scale-105"
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' });
+          }}
         >
           <span className="text-primary">D</span>hirendra
         </a>
