@@ -1,16 +1,18 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, MousePointer, Code, Eye } from 'lucide-react';
+import { ArrowRight, MousePointer, Code, Eye, Sparkles, ArrowDown } from 'lucide-react';
 import { TypeAnimation } from 'react-type-animation';
 import { personalInfo } from '@/lib/data';
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 
 export function HeroSection() {
   const heroSectionRef = useRef<HTMLDivElement>(null);
   const [isHeroVisible, setIsHeroVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const [isHovering, setIsHovering] = useState(false);
   const controls = useAnimation();
   
   // Track mouse movement for parallax effect
@@ -59,6 +61,20 @@ export function HeroSection() {
     };
   }, []);
 
+  // Hide scroll indicator after scrolling
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setShowScrollIndicator(false);
+      } else {
+        setShowScrollIndicator(true);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleProjectsClick = () => {
     const projectsSection = document.getElementById('projects');
     if (projectsSection) {
@@ -89,8 +105,10 @@ export function HeroSection() {
           <motion.h1 
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-shadow-md"
             animate={controls}
+            onHoverStart={() => setIsHovering(true)}
+            onHoverEnd={() => setIsHovering(false)}
           >
-            Hi, I'm <span className="text-gradient relative">
+            Hi, I'm <span className="text-gradient relative inline-block">
               {personalInfo.name}
               <motion.span 
                 className="absolute -bottom-2 left-0 w-full h-1 bg-primary/70 rounded-full"
@@ -98,6 +116,18 @@ export function HeroSection() {
                 animate={{ width: "100%" }}
                 transition={{ duration: 1, delay: 1.2 }}
               />
+              <AnimatePresence>
+                {isHovering && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="absolute -right-6 -top-6"
+                  >
+                    <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </span>
           </motion.h1>
         </motion.div>
@@ -130,7 +160,7 @@ export function HeroSection() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-12 px-2">
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-12 px-2 leading-relaxed">
             {personalInfo.bio}
           </p>
         </motion.div>
@@ -145,11 +175,17 @@ export function HeroSection() {
             size="lg" 
             className="group w-full sm:w-auto relative overflow-hidden"
             onClick={handleProjectsClick}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <span className="relative z-10 flex items-center">
+            <motion.span 
+              className="relative z-10 flex items-center"
+              animate={{ x: [0, 5, 0] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            >
               My Projects
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </span>
+            </motion.span>
             <span className="absolute inset-0 w-full h-full bg-primary/80 animate-pulse"></span>
           </Button>
           <Button 
@@ -163,6 +199,8 @@ export function HeroSection() {
                 icon: <Eye className="h-5 w-5 text-primary" />
               });
             }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <span className="relative z-10">Contact Me</span>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
@@ -173,9 +211,9 @@ export function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-8 sm:mt-12 flex justify-center flex-wrap gap-3 sm:gap-4"
+          className="mt-6 sm:mt-12 flex justify-center flex-wrap gap-3 sm:gap-4"
         >
-          {Object.entries(personalInfo.socials).map(([platform, url]) => (
+          {Object.entries(personalInfo.socials).map(([platform, url], index) => (
             <motion.a 
               key={platform} 
               href={url} 
@@ -184,6 +222,9 @@ export function HeroSection() {
               className="text-muted-foreground hover:text-primary transition-colors p-2 relative group"
               whileHover={{ scale: 1.1 }}
               onHoverStart={() => toast.info(`View my ${platform} profile`, { duration: 1500 })}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 + index * 0.1 }}
             >
               <span className="capitalize text-sm sm:text-base font-medium">{platform}</span>
               <motion.span 
@@ -202,52 +243,91 @@ export function HeroSection() {
         
         <div className="absolute bottom-0 left-0 right-0 h-[300px] bg-gradient-to-t from-background to-transparent"></div>
         
-        {/* Interactive animated shapes */}
-        {Array.from({ length: 6 }).map((_, i) => (
+        {/* Interactive floating particles */}
+        {Array.from({ length: 12 }).map((_, i) => (
           <motion.div
             key={i}
-            className={`absolute rounded-full opacity-${20 + i * 10} bg-primary/50`}
+            className={`absolute rounded-full opacity-${20 + i * 5} bg-primary/50`}
             style={{
-              width: `${8 + i * 2}px`,
-              height: `${8 + i * 2}px`,
-              top: `${20 + i * 15}%`,
-              left: `${15 + i * 12}%`,
+              width: `${5 + i * 1.5}px`,
+              height: `${5 + i * 1.5}px`,
+              top: `${Math.random() * 80 + 10}%`,
+              left: `${Math.random() * 80 + 10}%`,
             }}
             animate={{
-              y: [0, -10, 0],
+              y: [0, -(10 + i * 2), 0],
+              x: [0, (5 + i), 0],
               opacity: [0.2, 0.5, 0.2],
               scale: [1, 1.2, 1]
             }}
             transition={{
-              duration: 4 + i,
+              duration: 3 + i,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: i * 0.5
+              delay: i * 0.3
             }}
           />
         ))}
       </div>
       
-      {/* Mouse scroll indicator */}
-      <motion.div 
-        className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 text-center opacity-80"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2, duration: 1 }}
-      >
-        <motion.div 
-          className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-primary/50 rounded-full flex justify-center p-1 mx-auto"
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
+      {/* Enhanced mouse scroll indicator */}
+      <AnimatePresence>
+        {showScrollIndicator && (
           <motion.div 
-            className="w-1 h-2 bg-primary/80 rounded-full"
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
-        </motion.div>
-        <p className="text-xs text-muted-foreground mt-2">Scroll Down</p>
-      </motion.div>
+            className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 text-center"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ delay: 2, duration: 1 }}
+          >
+            <motion.div 
+              className="flex flex-col items-center"
+              animate={{ y: [0, 5, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <ArrowDown className="h-5 w-5 text-primary mb-2" />
+              <motion.div 
+                className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-primary/50 rounded-full flex justify-center p-1 mx-auto"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <motion.div 
+                  className="w-1 h-2 bg-primary/80 rounded-full"
+                  animate={{ y: [0, 6, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              </motion.div>
+              <p className="text-xs text-muted-foreground mt-2">Scroll Down</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Animated gradient border */}
+      <div className="absolute inset-x-4 top-4 bottom-4 border border-primary/20 rounded-xl pointer-events-none overflow-hidden">
+        <motion.div 
+          className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent"
+          animate={{ 
+            left: ['-100%', '100%'],
+          }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: 4,
+            ease: "linear"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-0 right-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent"
+          animate={{ 
+            right: ['-100%', '100%'],
+          }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: 4,
+            ease: "linear"
+          }}
+        />
+      </div>
     </section>
   );
 }
