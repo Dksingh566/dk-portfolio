@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { FileText, MessageSquare } from 'lucide-react';
+import { toast } from 'sonner';
 
 export interface NavItem {
   name: string;
@@ -26,7 +27,7 @@ export const navigateTo = (href: string, name: string) => {
       // Small delay for mobile menu to close before scrolling
       setTimeout(() => {
         element.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+      }, 300); // Increased delay for better mobile experience
     }
     
     // Special case for Resume
@@ -41,8 +42,6 @@ export const navigateTo = (href: string, name: string) => {
 
 // Function to handle resume click
 export const handleResumeClick = () => {
-  const { toast } = require('sonner');
-  
   toast.success("Resume is now downloading!", {
     description: "Thank you for your interest in my profile.",
     position: "bottom-right",

@@ -87,7 +87,7 @@ export function HeroSection() {
           className="perspective-container"
         >
           <motion.h1 
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-shadow-md"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-shadow-md"
             animate={controls}
           >
             Hi, I'm <span className="text-gradient relative">
@@ -108,7 +108,7 @@ export function HeroSection() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="min-h-[40px] md:min-h-[50px]"
         >
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-muted-foreground mb-8 text-shadow-sm">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-muted-foreground mb-6 sm:mb-8 text-shadow-sm">
             <TypeAnimation
               sequence={[
                 'Full-Stack Developer',
@@ -130,7 +130,7 @@ export function HeroSection() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-12 px-2">
             {personalInfo.bio}
           </p>
         </motion.div>
@@ -148,7 +148,7 @@ export function HeroSection() {
           >
             <span className="relative z-10 flex items-center">
               My Projects
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </span>
             <span className="absolute inset-0 w-full h-full bg-primary/80 animate-pulse"></span>
           </Button>
@@ -173,7 +173,7 @@ export function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-12 flex justify-center space-x-4"
+          className="mt-8 sm:mt-12 flex justify-center flex-wrap gap-3 sm:gap-4"
         >
           {Object.entries(personalInfo.socials).map(([platform, url]) => (
             <motion.a 
@@ -185,7 +185,7 @@ export function HeroSection() {
               whileHover={{ scale: 1.1 }}
               onHoverStart={() => toast.info(`View my ${platform} profile`, { duration: 1500 })}
             >
-              <span className="capitalize font-medium">{platform}</span>
+              <span className="capitalize text-sm sm:text-base font-medium">{platform}</span>
               <motion.span 
                 className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"
                 initial={{ width: 0 }}
@@ -230,13 +230,13 @@ export function HeroSection() {
       
       {/* Mouse scroll indicator */}
       <motion.div 
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center opacity-80"
+        className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 text-center opacity-80"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2, duration: 1 }}
       >
         <motion.div 
-          className="w-6 h-10 border-2 border-primary/50 rounded-full flex justify-center p-1 mx-auto"
+          className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-primary/50 rounded-full flex justify-center p-1 mx-auto"
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ duration: 2, repeat: Infinity }}
         >

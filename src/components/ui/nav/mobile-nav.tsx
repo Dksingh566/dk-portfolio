@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
-import { Menu, Sun, Moon, MessageSquare } from 'lucide-react';
+import { Menu, Sun, Moon, MessageSquare, Github, Linkedin, Twitter } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { NavItem, navigateTo } from './nav-items';
 import { personalInfo } from '@/lib/data';
@@ -102,8 +102,6 @@ interface SocialLinkProps {
 
 function SocialLink({ platform, url }: SocialLinkProps) {
   const getIcon = (platform: string) => {
-    const { Github, Linkedin, Twitter } = require('lucide-react');
-    
     switch (platform.toLowerCase()) {
       case 'github':
         return <Github className="h-5 w-5" />;
