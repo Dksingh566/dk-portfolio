@@ -1,18 +1,18 @@
 export const personalInfo = {
   name: "Dhirendra Singh",
-  title: "UI/UX Designer & Front-End Developer",
+  title: "UI/UX Designer & Full-Stack Developer",
   tagline: "Crafting Digital Experiences | Building Future Tech",
-  email: "hello@dhirendrasingh.com",
-  phone: "+91 9876543210",
-  location: "Bangalore, India",
+  email: "dhirendrasinghkushinagar719@gmail.com",
+  phone: "+91 9041909256",
+  location: "Chnadigrah, India",
   bio: "I'm a passionate UI/UX designer and front-end developer with 5+ years of experience creating intuitive, engaging digital experiences. I transform complex problems into elegant solutions through thoughtful design and clean code.",
   avatar: "/placeholder.svg", // Replace with actual image
   socials: {
-    github: "https://github.com/dhirendrasingh",
-    linkedin: "https://linkedin.com/in/dhirendrasingh",
-    twitter: "https://twitter.com/dhirendrasingh",
-    dribbble: "https://dribbble.com/dhirendrasingh",
-    behance: "https://behance.net/dhirendrasingh"
+    github: "https://github.com/Dkraja566",
+    linkedin: "https://www.linkedin.com/in/dhirendra-dk566/",
+    twitter: "https://x.com/Dkraja566",
+    dribbble: "#",
+    behance: "#"
   }
 };
 
