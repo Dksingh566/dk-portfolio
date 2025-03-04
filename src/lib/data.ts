@@ -96,7 +96,7 @@ export const projects = [
     id: "fintech-dashboard",
     title: "FinTrack Dashboard",
     category: "UI/UX",
-    image: "/placeholder.svg", // Replace with actual image
+    image: "/placeholder1.avif", // Replace with actual image
     description: "A comprehensive financial tracking dashboard with intuitive data visualization and real-time updates.",
     technologies: ["React", "TypeScript", "GSAP", "Chart.js", "Tailwind CSS"],
     link: "#",
@@ -112,7 +112,7 @@ export const projects = [
     id: "ecommerce-platform",
     title: "LuxeCommerce",
     category: "Web Dev",
-    image: "/placeholder.svg", // Replace with actual image
+    image: "/placeholder2.png", // Replace with actual image
     description: "A premium e-commerce platform with advanced filtering, AR product preview, and seamless checkout experience.",
     technologies: ["Next.js", "Redux", "Node.js", "MongoDB", "Framer Motion"],
     link: "#",
@@ -128,7 +128,7 @@ export const projects = [
     id: "health-app",
     title: "VitalTrack",
     category: "Front-End",
-    image: "/placeholder.svg", // Replace with actual image
+    image: "/placeholder3.avif", // Replace with actual image
     description: "A health monitoring application with personalized insights and interactive progress visualization.",
     technologies: ["React Native", "Redux", "Firebase", "D3.js"],
     link: "#",
@@ -144,7 +144,7 @@ export const projects = [
     id: "ai-assistant",
     title: "Echo AI Assistant",
     category: "CS Projects",
-    image: "/placeholder.svg", // Replace with actual image
+    image: "/placeholder4.jpg", // Replace with actual image
     description: "An AI-powered virtual assistant with natural language processing and personalized responses.",
     technologies: ["Python", "TensorFlow", "React", "Node.js", "WebSocket"],
     link: "#",
@@ -160,7 +160,7 @@ export const projects = [
     id: "travel-planner",
     title: "Wanderlust",
     category: "UI/UX",
-    image: "/placeholder.svg", // Replace with actual image
+    image: "/placeholder5.jpg", // Replace with actual image
     description: "A smart travel planning application with itinerary generation and real-time weather updates.",
     technologies: ["React", "Node.js", "MongoDB", "Google Maps API", "OpenWeather API"],
     link: "#",
@@ -176,7 +176,7 @@ export const projects = [
     id: "music-streaming",
     title: "WaveLab",
     category: "Web Dev",
-    image: "/placeholder.svg", // Replace with actual image
+    image: "/placeholder6.jpg", // Replace with actual image
     description: "A music streaming platform with personalized recommendations and social sharing features.",
     technologies: ["React", "Redux", "Node.js", "MongoDB", "Socket.io"],
     link: "#",
