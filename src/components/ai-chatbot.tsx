@@ -11,7 +11,7 @@ type Message = {
   content: string;
 };
 
-const AI_API_KEY = ""; // You should add your API key here after I provide the code
+const AI_API_KEY = "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"; // You should add your API key here after I provide the code
 
 export function AIChat() {
   const [messages, setMessages] = useState<Message[]>([]);
