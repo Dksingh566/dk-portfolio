@@ -5,6 +5,7 @@ import { Footer } from '@/components/ui/footer';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils'; 
 import { 
   Send, 
   Mail, 
