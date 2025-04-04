@@ -8,11 +8,10 @@ export const personalInfo = {
   bio: "I'm a passionate UI/UX designer and front-end developer with 5+ years of experience creating intuitive, engaging digital experiences. I transform complex problems into elegant solutions through thoughtful design and clean code.",
   avatar: "/placeholder.svg", // Replace with actual image
   socials: {
-    github: "https://github.com/Dkraja566",
+    github: "https://github.com/Dksingh566",
     linkedin: "https://www.linkedin.com/in/dhirendra-dk566/",
-    twitter: "https://x.com/Dkraja566",
-    dribbble: "#",
-    behance: "#"
+    twitter: "https://x.com/Dkraja566"
+   
   }
 };
 
@@ -26,9 +25,6 @@ export const skills = {
     { name: "Tailwind CSS", level: 95, icon: "tailwind" },
     { name: "Next.js", level: 85, icon: "nextjs" },
     { name: "Node.js", level: 80, icon: "nodejs" },
-    { name: "Redux", level: 85, icon: "redux" },
-    { name: "GraphQL", level: 75, icon: "graphql" },
-    { name: "Framer Motion", level: 85, icon: "framer" },
     { name: "GSAP", level: 80, icon: "gsap" }
   ],
   design: [
@@ -56,21 +52,11 @@ export const skills = {
 };
 
 export const experience = [
-  {
-    role: "Senior UI/UX Designer",
-    company: "TechCorp Inc.",
-    duration: "Jan 2021 - Present",
-    description: "Lead the design team in creating intuitive interfaces for various products. Work closely with developers to ensure design implementation meets vision. Conduct user research and usability testing to optimize product experience.",
-    achievements: [
-      "Redesigned flagship product UI increasing user engagement by 45%",
-      "Implemented design system reducing development time by 30%",
-      "Led team of 5 designers across multiple projects"
-    ]
-  },
+  
   {
     role: "Front-End Developer",
     company: "InnovateTech",
-    duration: "Mar 2018 - Dec 2020",
+    duration: "Mar 2022 - Dec 2025",
     description: "Developed responsive web applications using React and modern JavaScript. Collaborated with designers to implement pixel-perfect interfaces. Optimized application performance and accessibility.",
     achievements: [
       "Built 15+ responsive websites and applications",
@@ -81,7 +67,7 @@ export const experience = [
   {
     role: "UI Designer",
     company: "CreativeSolutions",
-    duration: "Jun 2016 - Feb 2018",
+    duration: "Jun 2020 - Feb 2022",
     description: "Created user interfaces for web and mobile applications. Worked with product managers to understand requirements and translate into visual designs. Created wireframes, mockups, and interactive prototypes.",
     achievements: [
       "Designed interfaces for 10+ mobile applications",
@@ -94,13 +80,13 @@ export const experience = [
 export const projects = [
   {
     id: "fintech-dashboard",
-    title: "FinTrack Dashboard",
-    category: "UI/UX",
+    title: "Budgetbuddy-Dashboard",
+    category: "Web Dev",
     image: "/placeholder1.avif", // Replace with actual image
     description: "A comprehensive financial tracking dashboard with intuitive data visualization and real-time updates.",
     technologies: ["React", "TypeScript", "GSAP", "Chart.js", "Tailwind CSS"],
-    link: "#",
-    github: "#",
+    link: "https://budgetbuddy2.netlify.app/auth/login",
+    github: "https://github.com/Dksingh566/Budgetbuddy-.git",
     featured: true,
     details: {
       challenge: "Create a complex data dashboard that simplifies financial information while maintaining a clean, intuitive interface.",
@@ -114,9 +100,9 @@ export const projects = [
     category: "Web Dev",
     image: "/placeholder2.png", // Replace with actual image
     description: "A premium e-commerce platform with advanced filtering, AR product preview, and seamless checkout experience.",
-    technologies: ["Next.js", "Redux", "Node.js", "MongoDB", "Framer Motion"],
+    technologies: ["HTML5", "TailwindCSS", "Node.js", "MongoDB", ],
     link: "#",
-    github: "#",
+    github: "https://github.com/Dksingh566/ecommerce-website-front-end.git",
     featured: true,
     details: {
       challenge: "Build a high-performance e-commerce platform with advanced features while maintaining fast load times.",
@@ -125,20 +111,21 @@ export const projects = [
     }
   },
   {
-    id: "health-app",
-    title: "VitalTrack",
-    category: "Front-End",
-    image: "/placeholder3.avif", // Replace with actual image
-    description: "A health monitoring application with personalized insights and interactive progress visualization.",
-    technologies: ["React Native", "Redux", "Firebase", "D3.js"],
-    link: "#",
-    github: "#",
-    featured: true,
-    details: {
-      challenge: "Design an engaging mobile health app that motivates users to maintain healthy habits.",
-      solution: "Created gamified experience with achievements, progress tracking, and personalized insights.",
-      outcome: "Increased user retention by 60% and daily active usage by 45%."
-    }
+    id: "music-dashboard",
+title: "Beat",
+category: "Full-Stack",
+image: "/placeholder3.avif", // Replace with actual image
+description: "A dynamic music dashboard with seamless streaming, playlist management, and real-time recommendations.",
+technologies: ["React", "TypeScript", "TailwindCSS", "Node.js", "MongoDB"],
+link: "https://beat-dashboard.netlify.app/",
+github: "https://github.com/Dksingh566/Beat.git",
+featured: true,
+details: {
+  challenge: "Develop an interactive music dashboard with a smooth user experience and real-time recommendations.",
+  solution: "Built a responsive UI with React, integrated a recommendation system, and optimized streaming performance.",
+  outcome: "Enhanced user engagement by 70% and improved playback efficiency by 50%."
+}
+
   },
   {
     id: "ai-assistant",
@@ -157,37 +144,56 @@ export const projects = [
     }
   },
   {
-    id: "travel-planner",
-    title: "Wanderlust",
+    id: "plant-selling",
+    title: "Plant.io",
     category: "UI/UX",
     image: "/placeholder5.jpg", // Replace with actual image
-    description: "A smart travel planning application with itinerary generation and real-time weather updates.",
-    technologies: ["React", "Node.js", "MongoDB", "Google Maps API", "OpenWeather API"],
-    link: "#",
-    github: "#",
-    featured: false,
+    description: "A plant-selling platform designed to promote greenery and environmental awareness through a seamless shopping experience.",
+    technologies: ["Figma", "UI/UX Design", "Prototyping"],
+    link: "https://www.figma.com/design/kOFsRtTwfisAje8C8ZikPD/Plant.com?node-id=0-1&t=vWt2mDDJqABNO8nR-1",
+    github: "https://www.figma.com/design/kOFsRtTwfisAje8C8ZikPD/Plant.com?node-id=0-1&t=vWt2mDDJqABNO8nR-1",
+    featured: true,
     details: {
-      challenge: "Create a comprehensive travel planning tool that simplifies trip organization.",
-      solution: "Designed an intuitive interface with drag-and-drop itinerary builder and integrated multiple APIs for real-time data.",
-      outcome: "Reduced average trip planning time from 5 hours to 45 minutes."
+      challenge: "Design a user-friendly plant marketplace that encourages people to buy and plant more greenery.",
+      solution: "Created an engaging UI with interactive plant categories, eco-friendly tips, and a simple checkout process.",
+      outcome: "Enhanced user engagement with an intuitive design, making plant shopping easy and enjoyable."
     }
-  },
+},
   {
-    id: "music-streaming",
-    title: "WaveLab",
+    id: "portfolio",
+    title: "Dk-portfolio",
     category: "Web Dev",
     image: "/placeholder6.jpg", // Replace with actual image
-    description: "A music streaming platform with personalized recommendations and social sharing features.",
-    technologies: ["React", "Redux", "Node.js", "MongoDB", "Socket.io"],
+    description: "A personal portfolio showcasing projects, skills, and experience in full-stack development and UI/UX design.",
+    technologies: ["React", "Next.js", "TailwindCSS", "Framer Motion"],
+    link: "https://dk566-portfolio.netlify.app/",
+    github: "https://github.com/Dksingh566/dk-portfolio.git",
+    featured: true,
+    details: {
+      challenge: "Create a visually appealing and fast-loading portfolio to highlight skills and attract potential clients/employers.",
+      solution: "Designed an interactive UI with smooth animations, optimized performance, and integrated a blog section.",
+      outcome: "Improved engagement by 80%, increased portfolio visits, and received multiple job inquiries."
+    }
+},
+  // Add more projects as needed
+  {
+    id: "startupx",
+    title: "StartupX",
+    category: "Front-End",
+    image: "/placeholder.jpg", // Replace with actual image
+    description: "A dynamic startup landing page designed to attract investors and early adopters with a modern UI and engaging content.",
+    technologies: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
     link: "#",
     github: "#",
-    featured: false,
+    featured: true,
     details: {
-      challenge: "Build a responsive music platform with minimal latency and personalized user experience.",
-      solution: "Implemented advanced caching strategies and machine learning algorithms for recommendation engine.",
-      outcome: "Achieved average page load time of under 2 seconds and 40% increase in user listening time."
+      challenge: "Create a visually appealing and high-performing landing page that effectively communicates the startup's vision and attracts investors.",
+      solution: "Designed a clean and modern UI with responsive components, smooth animations, and optimized SEO strategies for better reach.",
+      outcome: "Improved user engagement by 50% and increased conversion rates by 35% through an interactive and intuitive design."
     }
-  }
+}
+
+
 ];
 
 export const testimonials = [
