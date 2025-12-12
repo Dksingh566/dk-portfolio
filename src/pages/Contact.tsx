@@ -157,9 +157,9 @@ const ContactPage = () => {
     skills: ["React", "TypeScript", "Node.js", "CSS/Tailwind", "UI/UX Design", "Responsive Development"],
     experience: [
       {
-        role: "Senior Developer",
-        company: "Tech Solutions Inc.",
-        period: "2020 - Present",
+        role: "Web Developer",
+        company: "Property Expert Realtor",
+        period: "2025 - Present",
         description: "Lead development of enterprise web applications and mentored junior developers."
       },
       {
