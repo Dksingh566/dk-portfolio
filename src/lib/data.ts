@@ -66,8 +66,8 @@ export const experience = [
   },
   {
     role: "UI Designer",
-    company: "CreativeSolutions",
-    duration: "Jun 2020 - Feb 2022",
+    company: "Freelance",
+    duration: "Jun 2024 - Feb 2025",
     description: "Created user interfaces for web and mobile applications. Worked with product managers to understand requirements and translate into visual designs. Created wireframes, mockups, and interactive prototypes.",
     achievements: [
       "Designed interfaces for 10+ mobile applications",
