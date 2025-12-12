@@ -151,7 +151,7 @@ const ContactPage = () => {
 
   // Simple resume data
   const resumeData = {
-    name: "John Doe",
+    name: "Dhirendra Singh",
     title: "Full Stack Developer",
     summary: "Experienced full stack developer with a passion for creating beautiful and functional web applications.",
     skills: ["React", "JavaScript", "Node.js", "CSS/Tailwind", "UI/UX Design", "Responsive Development"],
