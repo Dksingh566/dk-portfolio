@@ -154,7 +154,7 @@ const ContactPage = () => {
     name: "John Doe",
     title: "Full Stack Developer",
     summary: "Experienced full stack developer with a passion for creating beautiful and functional web applications.",
-    skills: ["React", "TypeScript", "Node.js", "CSS/Tailwind", "UI/UX Design", "Responsive Development"],
+    skills: ["React", "JavaScript", "Node.js", "CSS/Tailwind", "UI/UX Design", "Responsive Development"],
     experience: [
       {
         role: "Web Developer",
@@ -162,21 +162,15 @@ const ContactPage = () => {
         period: "2025 - Present",
         description: "Lead development of enterprise web applications and mentored junior developers."
       },
-      {
-        role: "Web Developer",
-        company: "Creative Digital",
-        period: "2018 - 2020",
-        description: "Built responsive websites and implemented modern frontend frameworks."
-      }
     ],
     education: {
       degree: "Bachelor of Science in Computer Science",
-      institution: "University of Technology",
-      year: "2018"
+      institution: "Chandigarh University",
+      year: "2025"
     },
     contact: {
-      email: "john.doe@example.com",
-      phone: "+1 (555) 123-4567"
+      email: "singhdk9041@gmail.com",
+      phone: "+91-9041909256"
     }
   };
 
