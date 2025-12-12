@@ -2,10 +2,10 @@ export const personalInfo = {
   name: "Dhirendra Singh",
   title: "UI/UX Designer & Full-Stack Developer",
   tagline: "Crafting Digital Experiences | Building Future Tech",
-  email: "dhirendrasinghkushinagar719@gmail.com",
+  email: "singhdk9041@gmail.com",
   phone: "+91 9041909256",
-  location: "Chnadigrah, India",
-  bio: "I'm a passionate UI/UX designer and front-end developer with 5+ years of experience creating intuitive, engaging digital experiences. I transform complex problems into elegant solutions through thoughtful design and clean code.",
+  location: "Noida, India",
+  bio: "I'm a passionate UI/UX designer and front-end developer with 1+ years of experience creating intuitive, engaging digital experiences. I transform complex problems into elegant solutions through thoughtful design and clean code.",
   avatar: "/placeholder.svg", // Replace with actual image
   socials: {
     github: "https://github.com/Dksingh566",
@@ -84,7 +84,7 @@ export const projects = [
     category: "Web Dev",
     image: "/placeholder1.avif", // Replace with actual image
     description: "A comprehensive financial tracking dashboard with intuitive data visualization and real-time updates.",
-    technologies: ["React", "TypeScript", "GSAP", "Chart.js", "Tailwind CSS"],
+    technologies: ["React", "JavaScript", "GSAP", "Chart.js", "Tailwind CSS"],
     link: "https://budgetbuddy2.netlify.app/auth/login",
     github: "https://github.com/Dksingh566/Budgetbuddy-.git",
     featured: true,
