@@ -55,8 +55,8 @@ export const experience = [
   
   {
     role: "Front-End Developer",
-    company: "InnovateTech",
-    duration: "Mar 2022 - Dec 2025",
+    company: "Property Expert Realtor",
+    duration: "May 2025 - Dec 2025",
     description: "Developed responsive web applications using React and modern JavaScript. Collaborated with designers to implement pixel-perfect interfaces. Optimized application performance and accessibility.",
     achievements: [
       "Built 15+ responsive websites and applications",
