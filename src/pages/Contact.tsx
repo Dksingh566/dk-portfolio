@@ -89,7 +89,7 @@ const ContactPage = () => {
     setIsSubmitting(true);
     
     // Show sending toast
-    toast.loading("Sending your message...");
+    toast.loading("Sending your message..");
     
     // Simulate form submission
     setTimeout(() => {
